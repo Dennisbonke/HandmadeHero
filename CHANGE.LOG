@@ -1,6 +1,17 @@
 Known bugs:
--Screen flickers black and white when you move it.
--Close button does not work.
+-None.
+
+Version 0.0.0 (build 12):
+-Removed some debug code.
+-Filled out WM_CLOSE.
+-Changed the message loop and the closing behaviour.
+-Updated WM_PAINT.
+-Added UpdateWindow.
+-Added some Bitmap stuff.
+-Defined three things.
+
+Version 0.0.0 (build 11):
+-Fixed the close button.
 
 Version 0.0.0 (build 10):
 -Initial Release of the changelog.
