@@ -10,7 +10,7 @@ global_variable bool Running;
 global_variable BITMAPINFO BitmapInfo;
 global_variable void *BitmapMemory;
 global_variable HBITMAP BitmapHandle;
-global_variable HDC DeviceContext;
+global_variable HDC BitmapDeviceContext;
 
 internal void
 Win32ResizeDIBSection(int Width, int Height)
@@ -28,7 +28,7 @@ Win32ResizeDIBSection(int Width, int Height)
         // TODO(Dennis): Should we recreate these under certain special circumstances?
         BitmapDeviceContext = CreateCompatibleDC(0);
     }
-
+    BitmapDeviceContext = CreateCompatibleDC(0);
     BitmapInfo.bmiHeader.biSize = sizeof(BitmapInfo.bmiHeader);
     BitmapInfo.bmiHeader.biWidth = Width;
     BitmapInfo.bmiHeader.biHeight = Height;

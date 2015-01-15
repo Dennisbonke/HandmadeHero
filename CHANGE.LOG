@@ -1,6 +1,9 @@
 Known bugs:
 -None.
 
+Version 0.0.0 (build 13):
+-Fixed a derp in the global variables.
+
 Version 0.0.0 (build 12):
 -Removed some debug code.
 -Filled out WM_CLOSE.
