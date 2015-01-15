@@ -1,6 +1,21 @@
 Known bugs:
 -None.
 
+Version 0.0.0 (build 17):
+-Fixed a derp.
+-Reverted the code back to the start of day four.
+
+Version 0.0.0 (build 16):
+-Debug Time!
+
+Version 0.0.0 (build 15):
+-Fixed a derp.
+
+Version 0.0.0 (build 14):
+-Cleaned Up bitmap.
+-Updated build.bat.
+-Added some Typedefs.
+
 Version 0.0.0 (build 13):
 -Fixed a derp in the global variables.
 

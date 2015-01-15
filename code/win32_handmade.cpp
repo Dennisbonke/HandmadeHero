@@ -28,7 +28,7 @@ Win32ResizeDIBSection(int Width, int Height)
         // TODO(Dennis): Should we recreate these under certain special circumstances?
         BitmapDeviceContext = CreateCompatibleDC(0);
     }
-    BitmapDeviceContext = CreateCompatibleDC(0);
+
     BitmapInfo.bmiHeader.biSize = sizeof(BitmapInfo.bmiHeader);
     BitmapInfo.bmiHeader.biWidth = Width;
     BitmapInfo.bmiHeader.biHeight = Height;
@@ -171,3 +171,4 @@ WinMain(HINSTANCE Instance,
 
     return(0);
 }
+
