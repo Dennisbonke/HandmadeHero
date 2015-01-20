@@ -1,6 +1,9 @@
 Known bugs:
 -None.
 
+Version 0.0.0 (build 18):
+-VirtualAlloc and VirtualFree stuff (backup point if I mess up again).
+
 Version 0.0.0 (build 17):
 -Fixed a derp.
 -Reverted the code back to the start of day four.
