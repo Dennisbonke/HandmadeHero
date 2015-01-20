@@ -1,6 +1,18 @@
 Known bugs:
 -None.
 
+Version 0.0.1 (build 23):
+-Optimalization.
+
+Version 0.0.1 (build 22):
+-Screen is animated now.
+-Fixed naming.
+
+Version 0.0.1 (build 21):
+-Documented some stuff.
+-Changed Pixels, now shows a nice screen with multiple colors.
+-Pixels in own function.
+
 Version 0.0.1 (build 20):
 -Version Bump!
 -After looking it up, I finally fixed it, don't ask me how.
