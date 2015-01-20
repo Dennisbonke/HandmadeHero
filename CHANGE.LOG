@@ -1,6 +1,13 @@
 Known bugs:
 -None.
 
+Version 0.0.1 (build 20):
+-Version Bump!
+-After looking it up, I finally fixed it, don't ask me how.
+
+Version 0.0.0 (build 19):
+-Added Pixels, test to see if I didn't mess up.
+
 Version 0.0.0 (build 18):
 -VirtualAlloc and VirtualFree stuff (backup point if I mess up again).
 
