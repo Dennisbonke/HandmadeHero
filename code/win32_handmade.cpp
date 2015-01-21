@@ -25,15 +25,15 @@ struct win32_offscreen_buffer
     int BytesPerPixel;
 };
 
-// TODO(Dennis): This is a global for now.
-global_variable bool Running;
-global_variable win32_offscreen_buffer GlobalBackBuffer;
-
 struct win32_window_dimensions
 {
     int Width;
     int Height;
 };
+
+// TODO(Dennis): This is a global for now.
+global_variable bool Running;
+global_variable win32_offscreen_buffer GlobalBackbuffer;
 
 win32_window_dimensions
 Win32GetWindowDimension(HWND Window)
@@ -114,14 +114,14 @@ Win32DisplayBufferInWindow(HDC DeviceContext,
                            win32_offscreen_buffer Buffer,
                            int X, int Y, int Width, int Height)
 {
+    //TODO(Dennis): Aspect ratio correction
     StretchDIBits(DeviceContext,
-                  /*int WindowWidth = ClientRect.right - ClientRect.left;
-    int WindowHeight = ClientRect.bottom - ClientRect.top;
+                  /*
                   X, Y, Width, Height,
                   X, Y, Width, Height,
                   */
-                  0, 0, Buffer.Width, Buffer.Height,
                   0, 0, WindowWidth, WindowHeight,
+                  0, 0, Buffer.Width, Buffer.Height,
                   Buffer.Memory,
                   &Buffer.Info,
                   DIB_RGB_COLORS, SRCCOPY);
@@ -139,8 +139,6 @@ Win32MainWindowCallback(HWND Window,
     {
         case WM_SIZE:
         {
-            win32_window_dimensions Dimension = Win32GetWindowDimension(Window);
-            Win32ResizeDIBSection(&GlobalBackBuffer, Dimension.Width, Dimension.Height);
         } break;
 
         case WM_CLOSE:
@@ -171,7 +169,7 @@ Win32MainWindowCallback(HWND Window,
 
             win32_window_dimensions Dimension = Win32GetWindowDimension(Window);
             Win32DisplayBufferInWindow(DeviceContext, Dimension.Width, Dimension.Height,
-                                       GlobalBackBuffer, X, Y, Width, Height);
+                                       GlobalBackbuffer, X, Y, Width, Height);
             EndPaint(Window, &Paint);
         } break;
 
@@ -189,9 +187,11 @@ WinMain(HINSTANCE Instance,
         LPSTR CommandLine,
         int ShowCode)
 {
-    WNDCLASS WindowClass = {};
+  WNDCLASS WindowClass = {};
 
-  WindowClass.style = CS_HREDRAW|CS_VREDRAW;
+  Win32ResizeDIBSection(&GlobalBackbuffer, 1280, 720);
+
+  WindowClass.style = CS_HREDRAW|CS_VREDRAW|CS_OWNDC;
   WindowClass.lpfnWndProc = Win32MainWindowCallback;
   WindowClass.hInstance = Instance;
 //  WindowClass.hIcon;
@@ -215,6 +215,8 @@ WinMain(HINSTANCE Instance,
                 0);
       if(Window)
       {
+          HDC DeviceContext = GetDC(Window);
+
           int XOffset = 0;
           int YOffset = 0;
 
@@ -233,15 +235,12 @@ WinMain(HINSTANCE Instance,
                   DispatchMessageA(&Message);
               }
 
-              RenderWeirdGradient(GlobalBackBuffer, XOffset, YOffset);
-
-              HDC DeviceContext = GetDC(Window);
+              RenderWeirdGradient(GlobalBackbuffer, XOffset, YOffset);
 
               win32_window_dimensions Dimension = Win32GetWindowDimension(Window);
               Win32DisplayBufferInWindow(DeviceContext, Dimension.Width, Dimension.Height,
-                                         GlobalBackBuffer, 0, 0,
+                                         GlobalBackbuffer, 0, 0,
                                          Dimension.Width, Dimension.Height);
-              ReleaseDC(Window, DeviceContext);
 
               ++XOffset;
               YOffset += 2;
