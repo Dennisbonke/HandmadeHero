@@ -1,5 +1,12 @@
 Known bugs:
--None.
+-Screen flickers when the resolution is not 1280 by 720.
+
+Version 0.0.1 (build 28):
+-More work on Controller support.
+-Press A on a XBOX360 Controller to let the screen move up.
+
+Version 0.0.1 (build 27):
+-Started working on XBOX360 Controller support.
 
 Version 0.0.1 (build 26):
 -More code cleanup.
