@@ -1,6 +1,13 @@
 Known bugs:
 -None.
 
+Version 0.0.1 (build 25):
+-Fixed a memory leak.
+
+Version 0.0.1 (build 24):
+-Clean-up of the code.
+-More Optimalization of the code.
+
 Version 0.0.1 (build 23):
 -Optimalization.
 
