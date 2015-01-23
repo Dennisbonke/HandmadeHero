@@ -1,6 +1,10 @@
 Known bugs:
 -Screen flickers when the resolution is not 1280 by 720.
 
+Version 0.0.1 (build 30):
+-Added exit confirmation when escape is pressed.
+-When no XBOX360 Controller is found, the screen will move up by default.
+
 Version 0.0.1 (build 29):
 -Started working on keybord support.
 -Clean-up of the code.

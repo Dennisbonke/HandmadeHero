@@ -250,6 +250,15 @@ Win32MainWindowCallback(HWND Window,
                         OutputDebugStringA("WasDown");
                     }
                     OutputDebugStringA("\n");
+
+                    int msgboxID = MessageBoxA(Window, "Do you really want to quit?", "Handmade Hero", MB_YESNO|MB_ICONWARNING|MB_DEFBUTTON2);
+                    switch (msgboxID)
+                    {
+                        case IDYES:
+                        {
+                            Running = false;
+                        }
+                    }
                 }
                 else if(VKCode == VK_SPACE)
                 {
@@ -373,6 +382,7 @@ WinMain(HINSTANCE Instance,
                   else
                   {
                       //NOTE(Dennis): The controller is not available
+                      YOffset += 2;
                   }
               }
 
