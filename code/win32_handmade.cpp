@@ -33,7 +33,7 @@ struct win32_window_dimensions
 };
 
 // TODO(Dennis): This is a global for now.
-global_variable bool Running;
+global_variable bool GlobalRunning;
 global_variable win32_offscreen_buffer GlobalBackbuffer;
 
 //NOTE(Dennis): XInputGetState
@@ -41,7 +41,7 @@ global_variable win32_offscreen_buffer GlobalBackbuffer;
 typedef X_INPUT_GET_STATE(x_input_get_state);
 X_INPUT_GET_STATE(XInputGetStateStub)
 {
-    return(0);
+    return(ERROR_DEVICE_NOT_CONNECTED);
 }
 global_variable x_input_get_state *XInputGetState_ = XInputGetStateStub;
 #define XInputSetState XInputSetState_
@@ -51,7 +51,7 @@ global_variable x_input_get_state *XInputGetState_ = XInputGetStateStub;
 typedef X_INPUT_SET_STATE(x_input_set_state);
 X_INPUT_SET_STATE(XInputSetStateStub)
 {
-    return(0);
+    return(ERROR_DEVICE_NOT_CONNECTED);
 }
 global_variable x_input_set_state *XInputSetState_ = XInputSetStateStub;
 #define XInputGetState XInputGetState_
@@ -59,7 +59,13 @@ global_variable x_input_set_state *XInputSetState_ = XInputSetStateStub;
 internal void
 Win32LoadXInput(void)
 {
-    HMODULE XInputLibrary = LoadLibraryA("xinput1_3.dll");
+    //TODO(Dennis): Test this on Windows 8, 7, Vista, XP, 2000? to see which one has which.
+    HMODULE XInputLibrary = LoadLibraryA("xinput1_4.dll");
+    if(!XInputLibrary)
+    {
+        XInputLibrary = LoadLibraryA("xinput1_3.dll");
+    }
+
     if(XInputLibrary)
     {
         XInputGetState = (x_input_get_state *)GetProcAddress(XInputLibrary, "XInputGetState");
@@ -174,7 +180,7 @@ Win32MainWindowCallback(HWND Window,
         case WM_CLOSE:
         {
             // TODO(Dennis): Handle this with a message to the user?
-            Running = false;
+            GlobalRunning = false;
         } break;
 
         case WM_ACTIVATEAPP:
@@ -185,7 +191,7 @@ Win32MainWindowCallback(HWND Window,
         case WM_DESTROY:
         {
             // TODO(Dennis): Handle this as an error - recreate window?
-            Running = false;
+            GlobalRunning = false;
         } break;
 
         case WM_SYSKEYDOWN:
@@ -256,7 +262,7 @@ Win32MainWindowCallback(HWND Window,
                     {
                         case IDYES:
                         {
-                            Running = false;
+                            GlobalRunning = false;
                         }
                     }
                 }
@@ -264,8 +270,15 @@ Win32MainWindowCallback(HWND Window,
                 {
 
                 }
-            } break;
-        }
+
+            }
+
+            bool AltKeyWasDown = (LParam & (1 << 29) != 0);
+            if((VKCode == VK_F4) && AltKeyWasDown)
+            {
+                GlobalRunning = false;
+            }
+        } break;
 
         case WM_PAINT:
         {
@@ -284,7 +297,7 @@ Win32MainWindowCallback(HWND Window,
 
         default:
         {
-            Result = DefWindowProc(Window, Message, WParam, LParam);
+            Result = DefWindowProcA(Window, Message, WParam, LParam);
         } break;
     }
 
@@ -331,15 +344,15 @@ WinMain(HINSTANCE Instance,
           int XOffset = 0;
           int YOffset = 0;
 
-          Running = true;
-          while(Running)
+          GlobalRunning = true;
+          while(GlobalRunning)
           {
               MSG Message;
               while(PeekMessage(&Message, 0, 0, 0, PM_REMOVE))
               {
                   if(Message.message == WM_QUIT)
                   {
-                      Running = false;
+                      GlobalRunning = false;
                   }
 
                   TranslateMessage(&Message);

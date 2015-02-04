@@ -1,6 +1,11 @@
 Known bugs:
 -Screen flickers when the resolution is not 1280 by 720.
 
+Version 0.0.1 (build 31):
+-More improvements.
+-Alt-F4 now closes the window.
+-Fixed returning 0 when no XInput is found, 0 means ERROR_SUCCES here in Windows...
+
 Version 0.0.1 (build 30):
 -Added exit confirmation when escape is pressed.
 -When no XBOX360 Controller is found, the screen will move up by default.
