@@ -1,6 +1,9 @@
+// NOTE(Dennis): 30:56 minutes in on day 7
+
 #include <windows.h>
 #include <stdint.h>
 #include <xinput.h>
+#include <dsound.h>
 
 #define internal static
 #define local_persist static
@@ -10,6 +13,7 @@ typedef int8_t int8;
 typedef int16_t int16;
 typedef int32_t int32;
 typedef int64_t int64;
+typedef int32 bool32;
 
 typedef uint8_t uint8;
 typedef uint16_t uint16;
@@ -56,6 +60,9 @@ X_INPUT_SET_STATE(XInputSetStateStub)
 global_variable x_input_set_state *XInputSetState_ = XInputSetStateStub;
 #define XInputGetState XInputGetState_
 
+#define DIRECT_SOUND_CREATE(name) HRESULT WINAPI name(LPCGUID pcGuidDevice, LPDIRECTSOUND *ppDS, LPUNKNOWN pUnkOuter);
+typedef DIRECT_SOUND_CREATE(direct_sound_create);
+
 internal void
 Win32LoadXInput(void)
 {
@@ -70,6 +77,26 @@ Win32LoadXInput(void)
     {
         XInputGetState = (x_input_get_state *)GetProcAddress(XInputLibrary, "XInputGetState");
         XInputSetState = (x_input_set_state *)GetProcAddress(XInputLibrary, "XInputSetState");
+    }
+}
+
+internal void
+Win32InitDSound(void)
+{
+    // NOTE(Dennis): Load the library
+    HMODULE DSoundLibrary = LoadLibraryA("dsound.dll");
+
+    if(DSoundLibrary)
+    {
+        // NOTE(Dennis): Get an DirectSound object! -cooperative
+        direct_sound_create *DirectSoundCreate = (direct_sound_create *)
+            GetProcAddress(DSoundLibrary, "DirectSoundCreate");
+
+        // NOTE(Dennis): "Create" a primary buffer
+
+        // NOTE(Dennis): "Create" a secondary buffer
+
+        // NOTE(Dennis): Start it playing!
     }
 }
 
@@ -273,7 +300,7 @@ Win32MainWindowCallback(HWND Window,
 
             }
 
-            bool AltKeyWasDown = (LParam & (1 << 29) != 0);
+            bool32 AltKeyWasDown = (LParam & (1 << 29));
             if((VKCode == VK_F4) && AltKeyWasDown)
             {
                 GlobalRunning = false;
@@ -343,6 +370,8 @@ WinMain(HINSTANCE Instance,
 
           int XOffset = 0;
           int YOffset = 0;
+
+          Win32InitDSound();
 
           GlobalRunning = true;
           while(GlobalRunning)

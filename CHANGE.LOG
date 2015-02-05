@@ -1,6 +1,11 @@
 Known bugs:
 -Screen flickers when the resolution is not 1280 by 720.
 
+Version 0.0.1 (build 32):
+-Some more code improvements.
+-Fixing some warnings when compiling with -Wall.
+-Started on DirectSound.
+
 Version 0.0.1 (build 31):
 -More improvements.
 -Alt-F4 now closes the window.
