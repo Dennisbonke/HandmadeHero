@@ -240,8 +240,7 @@ Win32ResizeDIBSection(win32_offscreen_buffer *Buffer, int Width, int Height)
     Buffer->Info.bmiHeader.biCompression = BI_RGB;
 
 	int BitmapMemorySize = (Buffer->Width*Buffer->Height)*Buffer->BytesPerPixel;
-	Buffer->Memory = VirtualAlloc(0, BitmapMemorySize, MEM_COMMIT, PAGE_READWRITE);
-
+	Buffer->Memory = VirtualAlloc(0, BitmapMemorySize, MEM_RESERVE|MEM_COMMIT, PAGE_READWRITE);
 	Buffer->Pitch = Width*Buffer->BytesPerPixel;
 
 	// TODO(Dennis): Probably clear this to black
@@ -251,7 +250,8 @@ internal void
 Win32DisplayBufferInWindow(win32_offscreen_buffer *Buffer,
                            HDC DeviceContext, int WindowWidth, int WindowHeight)
 {
-    //TODO(Dennis): Aspect ratio correction
+    // TODO(Dennis): Aspect ratio correction
+    // TODO(Dennis): Play with stretch modes
     StretchDIBits(DeviceContext,
                   /*
                   X, Y, Width, Height,

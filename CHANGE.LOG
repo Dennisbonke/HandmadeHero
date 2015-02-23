@@ -1,6 +1,10 @@
 Known bugs:
 -Screen flickers when the resolution is not 1280 by 720.
 
+Version 0.0.1 (build 35):
+-Finished the QA.
+-Some code cleanup.
+
 Version 0.0.1 (build 34):
 -Fixed compiler error about WaveFormat.
 -Fixed some derps.
