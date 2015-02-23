@@ -1,6 +1,17 @@
 Known bugs:
 -Screen flickers when the resolution is not 1280 by 720.
 
+Version 0.0.1 (build 34):
+-Fixed compiler error about WaveFormat.
+-Fixed some derps.
+
+Version 0.0.1 (build 33):
+-Fixed an derp with XInput_Get_State and XInput_Set_State.
+-The XBOX360 Controller sticks now controll the horizontal and vertical movement of the window, if there is no controller found, it will default to move horizontal and vertical by 2 pixels.
+-Created Primary Sound Buffer.
+-Started on the Secondary Sound Buffer.
+-Added some debug stuff.
+
 Version 0.0.1 (build 32):
 -Some more code improvements.
 -Fixing some warnings when compiling with -Wall.

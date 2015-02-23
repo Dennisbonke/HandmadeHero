@@ -1,4 +1,4 @@
-// NOTE(Dennis): 30:56 minutes in on day 7
+// NOTE(Dennis): Day 7 complete, QA next.
 
 #include <windows.h>
 #include <stdint.h>
@@ -48,7 +48,7 @@ X_INPUT_GET_STATE(XInputGetStateStub)
     return(ERROR_DEVICE_NOT_CONNECTED);
 }
 global_variable x_input_get_state *XInputGetState_ = XInputGetStateStub;
-#define XInputSetState XInputSetState_
+#define XInputGetState XInputGetState_
 
 //NOTE(Dennis): XInputSetState
 #define X_INPUT_SET_STATE(name) DWORD WINAPI name(DWORD dwUserIndex, XINPUT_VIBRATION *pVibration)
@@ -58,7 +58,7 @@ X_INPUT_SET_STATE(XInputSetStateStub)
     return(ERROR_DEVICE_NOT_CONNECTED);
 }
 global_variable x_input_set_state *XInputSetState_ = XInputSetStateStub;
-#define XInputGetState XInputGetState_
+#define XInputSetState XInputSetState_
 
 #define DIRECT_SOUND_CREATE(name) HRESULT WINAPI name(LPCGUID pcGuidDevice, LPDIRECTSOUND *ppDS, LPUNKNOWN pUnkOuter);
 typedef DIRECT_SOUND_CREATE(direct_sound_create);
@@ -66,37 +66,111 @@ typedef DIRECT_SOUND_CREATE(direct_sound_create);
 internal void
 Win32LoadXInput(void)
 {
-    //TODO(Dennis): Test this on Windows 8, 7, Vista, XP, 2000? to see which one has which.
+    //TODO(Dennis): Test this on Windows 8, 7, Vista, XP to see which one has which.
     HMODULE XInputLibrary = LoadLibraryA("xinput1_4.dll");
     if(!XInputLibrary)
     {
+        // TODO(Dennis): Diagnostics
         XInputLibrary = LoadLibraryA("xinput1_3.dll");
     }
 
     if(XInputLibrary)
     {
         XInputGetState = (x_input_get_state *)GetProcAddress(XInputLibrary, "XInputGetState");
+        if(!XInputGetState) {XInputGetState = XInputGetStateStub;}
+
         XInputSetState = (x_input_set_state *)GetProcAddress(XInputLibrary, "XInputSetState");
+        if(!XInputSetState) {XInputSetState = XInputSetStateStub;}
+
+        // TODO(Dennis): Diagnostics
+
+    }
+    else
+    {
+        // TODO(Dennis): Diagnostics
     }
 }
 
 internal void
-Win32InitDSound(void)
+Win32InitDSound(HWND Window, int32 SamplesPerSecond, int32 BufferSize)
 {
     // NOTE(Dennis): Load the library
     HMODULE DSoundLibrary = LoadLibraryA("dsound.dll");
-
     if(DSoundLibrary)
     {
         // NOTE(Dennis): Get an DirectSound object! -cooperative
         direct_sound_create *DirectSoundCreate = (direct_sound_create *)
             GetProcAddress(DSoundLibrary, "DirectSoundCreate");
 
-        // NOTE(Dennis): "Create" a primary buffer
+        WAVEFORMATEX WaveFormat = {};
+        WaveFormat.wFormatTag = WAVE_FORMAT_PCM;
+        WaveFormat.nChannels = 2;
+        WaveFormat.nSamplesPerSec = SamplesPerSecond;
+        WaveFormat.wBitsPerSample = 16;
+        WaveFormat.nBlockAlign = (WaveFormat.nChannels*WaveFormat.wBitsPerSample) / 8;
+        WaveFormat.nAvgBytesPerSec = WaveFormat.nSamplesPerSec*WaveFormat.nBlockAlign;
+        WaveFormat.cbSize = 0;
 
-        // NOTE(Dennis): "Create" a secondary buffer
+        // TODO(Dennis): Double-check that this works on XP - DirectSound 8 or 7??
+        LPDIRECTSOUND Directsound;
+        if(DirectSoundCreate && SUCCEEDED(DirectSoundCreate(0, &Directsound, 0)))
+        {
+            if(SUCCEEDED(Directsound->SetCooperativeLevel(Window, DSSCL_PRIORITY)))
+            {
+                DSBUFFERDESC BufferDescription = {};
+                BufferDescription.dwSize = sizeof(BufferDescription);
+                BufferDescription.dwFlags = DSBCAPS_PRIMARYBUFFER;
 
-        // NOTE(Dennis): Start it playing!
+                // NOTE(Dennis): "Create" a primary buffer
+                // TODO(Dennis): DSBCAPS_GLOBALFOCUS?
+                LPDIRECTSOUNDBUFFER PrimaryBuffer;
+                if(SUCCEEDED(Directsound->CreateSoundBuffer(&BufferDescription, &PrimaryBuffer, 0)))
+                {
+                    HRESULT Error = SUCCEEDED(PrimaryBuffer->SetFormat(&WaveFormat));
+                    if(Error)
+                    {
+                        // NOTE(Dennis): We have finally set the format!
+                        OutputDebugStringA("Primary buffer format was set.\n");
+                    }
+                    else
+                    {
+                        // TODO(Dennis): Diagnostics
+                    }
+                }
+                else
+                {
+                    // TODO(Dennis): Diagnostics
+                }
+            }
+            else
+            {
+                // TODO(Dennis): Diagnostics
+            }
+
+            // NOTE(Dennis): "Create" a secondary buffer
+            // TODO(Dennis): DSBCAPS_GETCURRENTPOSITION2?
+            DSBUFFERDESC BufferDescription = {};
+            BufferDescription.dwSize = sizeof(BufferDescription);
+            BufferDescription.dwFlags = 0;
+            BufferDescription.dwBufferBytes = BufferSize;
+            BufferDescription.lpwfxFormat = &WaveFormat;
+            LPDIRECTSOUNDBUFFER SecondaryBuffer;
+            HRESULT Error = SUCCEEDED(Directsound->CreateSoundBuffer(&BufferDescription, &SecondaryBuffer, 0));
+            if(Error)
+            {
+                OutputDebugStringA("Secondary buffer created successfully.\n");
+            }
+
+            // NOTE(Dennis): Start it playing!
+        }
+        else
+        {
+            // TODO(Dennis): Diagnostics
+        }
+    }
+    else
+    {
+        // TODO(Dennis): Diagnostics
     }
 }
 
@@ -371,7 +445,7 @@ WinMain(HINSTANCE Instance,
           int XOffset = 0;
           int YOffset = 0;
 
-          Win32InitDSound();
+          Win32InitDSound(Window, 48000, 48000*sizeof(int16)*2);
 
           GlobalRunning = true;
           while(GlobalRunning)
@@ -416,14 +490,13 @@ WinMain(HINSTANCE Instance,
                       int16 StickX = Pad->sThumbLX;
                       int16 StickY = Pad->sThumbLY;
 
-                      if(AButton)
-                      {
-                          YOffset += 2;
-                      }
+                      XOffset += StickX >> 12;
+                      YOffset += StickY >> 12;
                   }
                   else
                   {
                       //NOTE(Dennis): The controller is not available
+                      XOffset += 2;
                       YOffset += 2;
                   }
               }
