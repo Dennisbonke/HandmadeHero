@@ -4,8 +4,7 @@ Handmade Hero is a ongoing project where I will be following the handmade hero t
 -[BUG] Screen flickers when the resolution is not 1280 by 720.<br>
 -[NOTE] Sound is still way too loud, be careful!<br>
 <h2>Current version:</h2>
-0.0.1, build: 37.<br>
+0.0.1, build: 39.<br>
 <h2>Current day finished:</h2>
 Week 2, Day 8.<br>
-QA is next.<br>
 Busy stuff here...

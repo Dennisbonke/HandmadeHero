@@ -1,4 +1,4 @@
-// NOTE(Dennis): Day 8 complete, QA is next.
+// NOTE(Dennis): Day 8 complete including the QA, day 9 is next.
 
 #include <windows.h>
 #include <stdint.h>
@@ -455,7 +455,7 @@ WinMain(HINSTANCE Instance,
           int SecondaryBufferSize = SamplesPerSecond*BytesPerSample;
 
           Win32InitDSound(Window, SamplesPerSecond, SecondaryBufferSize);
-          GlobalSecondaryBuffer->Play(0, 0, DSBPLAY_LOOPING);
+          bool32 SoundIsPlaying = false;
 
           GlobalRunning = true;
           while(GlobalRunning)
@@ -520,7 +520,11 @@ WinMain(HINSTANCE Instance,
               {
                 DWORD ByteToLock = RunningSampleIndex*BytesPerSample % SecondaryBufferSize;
                 DWORD BytesToWrite;
-                if(ByteToLock > PlayCursor)
+                if(ByteToLock == PlayCursor)
+                {
+                    BytesToWrite = SecondaryBufferSize;
+                }
+                else if(ByteToLock > PlayCursor)
                 {
                     BytesToWrite = (SecondaryBufferSize - ByteToLock);
                     BytesToWrite += PlayCursor;
@@ -531,6 +535,7 @@ WinMain(HINSTANCE Instance,
                 }
 
                 // TODO(Dennis): More strenuous test!
+                // TODO(Dennis): Switch to a sine wave
                 VOID *Region1;
                 DWORD Region1Size;
                 VOID *Region2;
@@ -543,6 +548,7 @@ WinMain(HINSTANCE Instance,
                 {
                     // TODO(Dennis): assert that Region1Size/Region2Size is valid
 
+                    // TODO(Dennis): Collapse these two loops
                     DWORD Region1SampleCount = Region1Size/BytesPerSample;
                     int16 *SampleOut = (int16 *)Region1;
                     for(DWORD SampleIndex = 0;
@@ -569,9 +575,15 @@ WinMain(HINSTANCE Instance,
                 }
              }
 
-              win32_window_dimensions Dimension = Win32GetWindowDimension(Window);
-              Win32DisplayBufferInWindow(&GlobalBackbuffer, DeviceContext,
-                                         Dimension.Width, Dimension.Height);
+             if(!SoundIsPlaying)
+             {
+                 GlobalSecondaryBuffer->Play(0, 0, DSBPLAY_LOOPING);
+                 SoundIsPlaying = true;
+             }
+
+             win32_window_dimensions Dimension = Win32GetWindowDimension(Window);
+             Win32DisplayBufferInWindow(&GlobalBackbuffer, DeviceContext,
+                                        Dimension.Width, Dimension.Height);
           }
       }
       else
