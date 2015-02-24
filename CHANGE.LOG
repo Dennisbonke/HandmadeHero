@@ -1,5 +1,18 @@
 Known bugs:
 -Screen flickers when the resolution is not 1280 by 720.
+-Sound is still way too loud, be careful!
+
+Version 0.0.1 (build 38):
+-Started playing some sound.
+-Adjusted the sound, was way too loud.
+-Forgot to unlock the buffer.
+
+Version 0.0.1 (build 37):
+-Fixed some bugs of build 36.
+
+Version 0.0.1 (build 36):
+-More code cleanup.
+-Filled the sound buffer.
 
 Version 0.0.1 (build 35):
 -Finished the QA.
