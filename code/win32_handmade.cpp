@@ -1,4 +1,4 @@
-// NOTE(Dennis): Day 9 complete, QA next.
+// NOTE(Dennis): Working on Day 9 QA, stopped @ 1:25:53.
 
 #include <windows.h>
 #include <stdint.h>
@@ -520,10 +520,10 @@ WinMain(HINSTANCE Instance,
 
           win32_sound_output SoundOutput = {};
 
+          // TODO(Dennis): Make this like sixty seconds?
           SoundOutput.SamplesPerSecond = 48000;
           SoundOutput.ToneHz = 256;
           SoundOutput.ToneVolume = 6000;
-          SoundOutput.RunningSampleIndex = 0;
           SoundOutput.WavePeriod = SoundOutput.SamplesPerSecond/SoundOutput.ToneHz;
           SoundOutput.BytesPerSample = sizeof(int16)*2;
           SoundOutput.SecondaryBufferSize = SoundOutput.SamplesPerSecond*SoundOutput.BytesPerSample;
@@ -594,15 +594,11 @@ WinMain(HINSTANCE Instance,
               {
                 DWORD ByteToLock = ((SoundOutput.RunningSampleIndex*SoundOutput.BytesPerSample) %
                                     SoundOutput.SecondaryBufferSize);
-                DWORD BytesToWrite;
 
+                DWORD BytesToWrite;
                 // TODO(Dennis): Change this to using a lower latency offset from the PlayCursor
                 // when we actually start having sound effects.
-                if(ByteToLock == PlayCursor)
-                {
-                    BytesToWrite = 0;
-                }
-                else if(ByteToLock > PlayCursor)
+                if(ByteToLock > PlayCursor)
                 {
                     BytesToWrite = (SoundOutput.SecondaryBufferSize - ByteToLock);
                     BytesToWrite += PlayCursor;
