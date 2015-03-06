@@ -3,8 +3,6 @@ Handmade Hero is a ongoing project where I will be following the handmade hero t
 <h2>Notes / Bugs</h2>
 -[BUG] Screen flickers when the resolution is not 1280 by 720.<br>
 <h2>Current version:</h2>
-0.0.2, build: 41.<br>
+0.0.2, build: 42.<br>
 <h2>Current day finished:</h2>
-Week 2, Day 9.<br>
-QA is next.<br>
-Busy stuff here...
+Week 2, Day 9.
