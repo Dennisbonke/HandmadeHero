@@ -1,4 +1,4 @@
-// NOTE(Dennis): Finished Day 9 including QA.
+// NOTE(Dennis): Day 10 complete, QA is next.
 
 #include <windows.h>
 #include <stdint.h>
@@ -489,6 +489,10 @@ WinMain(HINSTANCE Instance,
         LPSTR CommandLine,
         int ShowCode)
 {
+  LARGE_INTEGER PerfCountFrequencyResult;
+  QueryPerformanceFrequency(&PerfCountFrequencyResult);
+  int64 PerfCountFrequency = PerfCountFrequencyResult.QuadPart;
+
   Win32LoadXInput();
 
   WNDCLASSA WindowClass = {};
@@ -540,9 +544,15 @@ WinMain(HINSTANCE Instance,
           GlobalSecondaryBuffer->Play(0, 0, DSBPLAY_LOOPING);
 
           GlobalRunning = true;
+
+          LARGE_INTEGER LastCounter;
+          QueryPerformanceCounter(&LastCounter);
+
+          int64 LastCycleCount = __rdtsc();
           while(GlobalRunning)
           {
               MSG Message;
+
               while(PeekMessage(&Message, 0, 0, 0, PM_REMOVE))
               {
                   if(Message.message == WM_QUIT)
@@ -633,6 +643,25 @@ WinMain(HINSTANCE Instance,
              win32_window_dimensions Dimension = Win32GetWindowDimension(Window);
              Win32DisplayBufferInWindow(&GlobalBackbuffer, DeviceContext,
                                         Dimension.Width, Dimension.Height);
+
+             LARGE_INTEGER EndCounter;
+             QueryPerformanceCounter(&EndCounter);
+
+             int64 EndCycleCount = __rdtsc();
+
+             // TODO(Dennis): Display the value here
+             int64 CyclesElapsed = EndCycleCount - LastCycleCount;
+             int64 CounterElapsed = EndCounter.QuadPart - LastCounter.QuadPart;
+             int32 MSPerFrame = (int32)(((1000*CounterElapsed) / PerfCountFrequency));
+             int32 FPS = PerfCountFrequency / CounterElapsed;
+             int32 MCPF = (int32)(CyclesElapsed / (1000 * 1000));
+
+             char Buffer[256];
+             wsprintf(Buffer, "%dms/f, %df/s, %dmc/f\n", MSPerFrame, FPS, MCPF);
+             OutputDebugStringA(Buffer);
+
+             LastCounter = EndCounter;
+             LastCycleCount = EndCycleCount;
           }
       }
       else
