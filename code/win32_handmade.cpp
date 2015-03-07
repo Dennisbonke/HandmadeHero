@@ -1,7 +1,8 @@
-// NOTE(Dennis): Day 10 complete, QA is next.
+// NOTE(Dennis): Day 10 complete.
 
 #include <windows.h>
 #include <stdint.h>
+#include <stdio.h>
 #include <xinput.h>
 #include <dsound.h>
 
@@ -548,7 +549,7 @@ WinMain(HINSTANCE Instance,
           LARGE_INTEGER LastCounter;
           QueryPerformanceCounter(&LastCounter);
 
-          int64 LastCycleCount = __rdtsc();
+          uint64 LastCycleCount = __rdtsc();
           while(GlobalRunning)
           {
               MSG Message;
@@ -647,17 +648,17 @@ WinMain(HINSTANCE Instance,
              LARGE_INTEGER EndCounter;
              QueryPerformanceCounter(&EndCounter);
 
-             int64 EndCycleCount = __rdtsc();
+             uint64 EndCycleCount = __rdtsc();
 
              // TODO(Dennis): Display the value here
-             int64 CyclesElapsed = EndCycleCount - LastCycleCount;
+             uint64 CyclesElapsed = EndCycleCount - LastCycleCount;
              int64 CounterElapsed = EndCounter.QuadPart - LastCounter.QuadPart;
-             int32 MSPerFrame = (int32)(((1000*CounterElapsed) / PerfCountFrequency));
-             int32 FPS = PerfCountFrequency / CounterElapsed;
-             int32 MCPF = (int32)(CyclesElapsed / (1000 * 1000));
+             real64 MSPerFrame = (((1000.0f*(real64)CounterElapsed) / (real64)PerfCountFrequency));
+             real64 FPS = (real64)PerfCountFrequency / (real64)CounterElapsed;
+             real64 MCPF = ((real64)CyclesElapsed / (1000.0f * 1000.0f));
 
              char Buffer[256];
-             wsprintf(Buffer, "%dms/f, %df/s, %dmc/f\n", MSPerFrame, FPS, MCPF);
+             sprintf(Buffer, "%.02fms/f, %.02ff/s, %.02fmc/f\n", MSPerFrame, FPS, MCPF);
              OutputDebugStringA(Buffer);
 
              LastCounter = EndCounter;
