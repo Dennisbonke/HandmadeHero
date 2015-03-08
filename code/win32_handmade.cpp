@@ -1,4 +1,25 @@
-// NOTE(Dennis): Day 10 complete.
+// NOTE(Dennis): Working on Day 11, stopped @ 34:01
+
+/*
+   TODO(Dennis): THIS IS NOT A FINAL PLATFORM LAYER!!!
+
+   - Saved game locations
+   - Getting a handle to our own executable file
+   - Asset loading path
+   - Threading (launch a thread)
+   - Raw Input (support for multiple keyboards)
+   - Sleep/timeBeginPeriod
+   - ClipCursor() (multimonitor support)
+   - Fullscreen support
+   - WM_SETCURSOR (control cursor visibility)
+   - QueryCancelAutoplay
+   - WM_ACTIVATEAPP (for when we are not the active application)
+   - Blit speed improvements (BitBlt)
+   - Hardware acceleration (OpenGL or Direct3D or BOTH??)
+   - GetKeyboardLayout (for French keyboards, international WASD support)
+
+   Just a partial list of stuff!
+*/
 
 #include <windows.h>
 #include <stdint.h>
@@ -28,6 +49,8 @@ typedef uint64_t uint64;
 
 typedef float real32;
 typedef double real64;
+
+#include "handmade.cpp"
 
 struct win32_offscreen_buffer
 {
@@ -72,6 +95,13 @@ global_variable x_input_set_state *XInputSetState_ = XInputSetStateStub;
 
 #define DIRECT_SOUND_CREATE(name) HRESULT WINAPI name(LPCGUID pcGuidDevice, LPDIRECTSOUND *ppDS, LPUNKNOWN pUnkOuter);
 typedef DIRECT_SOUND_CREATE(direct_sound_create);
+
+void *
+PlatformLoadFile(char *FileName)
+{
+    // NOTE(Dennis): Implements the Win32 file loading
+    return(0);
+}
 
 internal void
 Win32LoadXInput(void)
@@ -645,10 +675,12 @@ WinMain(HINSTANCE Instance,
              Win32DisplayBufferInWindow(&GlobalBackbuffer, DeviceContext,
                                         Dimension.Width, Dimension.Height);
 
+             uint64 EndCycleCount = __rdtsc();
+
              LARGE_INTEGER EndCounter;
              QueryPerformanceCounter(&EndCounter);
 
-             uint64 EndCycleCount = __rdtsc();
+             MainLoop();
 
              // TODO(Dennis): Display the value here
              uint64 CyclesElapsed = EndCycleCount - LastCycleCount;
