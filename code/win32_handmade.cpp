@@ -1,4 +1,5 @@
 // NOTE(Dennis): Working on Day 11, stopped @ 34:01
+// TODO(Dennis): Maybe add keyboard support for the movement of the screen (temporary)
 
 /*
    TODO(Dennis): THIS IS NOT A FINAL PLATFORM LAYER!!!
@@ -323,7 +324,21 @@ Win32MainWindowCallback(HWND Window,
         case WM_CLOSE:
         {
             // TODO(Dennis): Handle this with a message to the user?
-            GlobalRunning = false;
+            int msgboxID = MessageBoxA(Window, "Do you really want to quit?", "Handmade Hero", MB_YESNO|MB_ICONWARNING|MB_DEFBUTTON2);
+                switch (msgboxID)
+                {
+                   case IDYES:
+                   {
+                      int msgboxID = MessageBoxA(Window, "Thank You for playing Handmade Hero!", "Handmade Hero", MB_OK|MB_ICONWARNING|MB_DEFBUTTON2);
+                      switch (msgboxID)
+                      {
+                         case IDOK:
+                         {
+                            GlobalRunning = false;
+                         }
+                      }
+                  }
+                }
         } break;
 
         case WM_ACTIVATEAPP:
@@ -588,7 +603,21 @@ WinMain(HINSTANCE Instance,
               {
                   if(Message.message == WM_QUIT)
                   {
-                      GlobalRunning = false;
+                    int msgboxID = MessageBoxA(Window, "Do you really want to quit?", "Handmade Hero", MB_YESNO|MB_ICONWARNING|MB_DEFBUTTON2);
+                    switch (msgboxID)
+                    {
+                        case IDYES:
+                        {
+                            int msgboxID = MessageBoxA(Window, "Thank You for playing Handmade Hero!", "Handmade Hero", MB_OK|MB_ICONWARNING|MB_DEFBUTTON2);
+                            switch (msgboxID)
+                            {
+                                case IDOK:
+                                {
+                                    GlobalRunning = false;
+                                }
+                            }
+                        }
+                    }
                   }
 
                   TranslateMessage(&Message);
