@@ -1,4 +1,4 @@
-/// NOTE(Dennis): Finished Day 11, QA is next
+/// NOTE(Dennis): Finished Day 11
 /// TODO(Dennis): Capture Debug strings to a file?
 
 /*
@@ -22,14 +22,7 @@
    Just a partial list of stuff!
 */
 
-#include <windows.h>
 #include <stdint.h>
-#include <stdio.h>
-#include <xinput.h>
-#include <dsound.h>
-
-/// TODO(Dennis): Implement sine ourselves
-#include <math.h>
 
 #define internal static
 #define local_persist static
@@ -52,6 +45,14 @@ typedef float real32;
 typedef double real64;
 
 #include "handmade.cpp"
+
+#include <windows.h>
+#include <stdio.h>
+#include <xinput.h>
+#include <dsound.h>
+
+/// TODO(Dennis): Implement sine ourselves
+#include <math.h>
 
 struct win32_offscreen_buffer
 {

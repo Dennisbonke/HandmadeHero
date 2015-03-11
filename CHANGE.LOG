@@ -1,6 +1,10 @@
 Known bugs:
 -Screen flickers when the resolution is not 1280 by 720.
 
+Version 0.0.2 (bui;d 48):
+-Finished the QA.
+-Done some small fixes.
+
 Version 0.0.2 (build 47):
 -Moved Rendering to non-platform specific code.
 -Done some more API.
