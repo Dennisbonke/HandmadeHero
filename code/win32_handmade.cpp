@@ -660,10 +660,11 @@ WinMain(HINSTANCE Instance,
              real64 FPS = (real64)PerfCountFrequency / (real64)CounterElapsed;
              real64 MCPF = ((real64)CyclesElapsed / (1000.0f * 1000.0f));
 
+#if HANDMADE_INTERNAL
              char TextBuffer[256];
              sprintf(TextBuffer, "%.02fms/f, %.02ff/s, %.02fmc/f\n", MSPerFrame, FPS, MCPF);
              OutputDebugStringA(TextBuffer);
-
+#endif // HANDMADE_INTERNAL
              LastCounter = EndCounter;
              LastCycleCount = EndCycleCount;
           }

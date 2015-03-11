@@ -1,7 +1,10 @@
 Known bugs:
 -Screen flickers when the resolution is not 1280 by 720.
 
-Version 0.0.2 (bui;d 48):
+Version 0.0.2 (build 49):
+-Addded Compiler switch for disabling / enabling dev / debug code. See README.
+
+Version 0.0.2 (build 48):
 -Finished the QA.
 -Done some small fixes.
 
