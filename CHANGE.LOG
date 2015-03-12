@@ -1,6 +1,16 @@
 Known bugs:
 -Screen flickers when the resolution is not 1280 by 720.
 
+Version 0.0.2 (build 51):
+-Fixed a couple of access violations.
+-Moved more sound to the API.
+-Some small changes.
+-More memory allocation.
+-Updated build.bat
+
+Version 0.0.2 (build 50):
+-Started to move the sound to non-platform specific code.
+
 Version 0.0.2 (build 49):
 -Addded Compiler switch for disabling / enabling dev / debug code. See README.
 
