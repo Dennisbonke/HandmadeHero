@@ -1,4 +1,4 @@
-/// NOTE(Dennis): Finished Day 12, QA is next
+/// NOTE(Dennis): Finished Day 12
 /// TODO(Dennis): Capture Debug strings to a file?
 
 /*
@@ -560,7 +560,7 @@ WinMain(HINSTANCE Instance,
 
           /// TODO(Dennis): Make this like sixty seconds?
           SoundOutput.SamplesPerSecond = 48000;
-          SoundOutput.ToneHz = 256;
+          SoundOutput.ToneHz = 512;
           SoundOutput.ToneVolume = 6000;
           SoundOutput.WavePeriod = SoundOutput.SamplesPerSecond/SoundOutput.ToneHz;
           SoundOutput.BytesPerSample = sizeof(int16)*2;
@@ -641,11 +641,11 @@ WinMain(HINSTANCE Instance,
                   }
               }
 
-              DWORD ByteToLock;
-              DWORD TargetCursor;
-              DWORD BytesToWrite;
-              DWORD PlayCursor;
-              DWORD WriteCursor;
+              DWORD ByteToLock = 0;
+              DWORD TargetCursor = 0;
+              DWORD BytesToWrite = 0;
+              DWORD PlayCursor = 0;
+              DWORD WriteCursor = 0;
               bool32 SoundIsValid = false;
               /// TODO(Dennis): Tighten up sound logic so that we know where we should be
               /// writing to and can anticipate the time spent in the game update.

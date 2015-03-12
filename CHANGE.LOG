@@ -1,6 +1,11 @@
 Known bugs:
 -Screen flickers when the resolution is not 1280 by 720.
 
+Version 0.0.2 (build 52):
+-Finished the QA.
+-Added some TODO's.
+-Added failsafe by the sound code.
+
 Version 0.0.2 (build 51):
 -Fixed a couple of access violations.
 -Moved more sound to the API.
