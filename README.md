@@ -2,6 +2,7 @@
 Handmade Hero is a ongoing project where I will be following the handmade hero tutorials by Casey Muratori.<br>
 <h2>Notes / Bugs</h2>
 -[BUG] Screen flickers when the resolution is not 1280 by 720.<br>
+-[NOTE/BUG] On my crappy coding laptop, the sound is awful to listen to.
 <h2>Current version:</h2>
 0.0.2, build: 55.<br>
 <h2>Current day finished:</h2>
