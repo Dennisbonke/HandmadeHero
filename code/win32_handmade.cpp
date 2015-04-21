@@ -1,4 +1,4 @@
-/// NOTE(Dennis): Day 13 finished, QA is next.
+/// NOTE(Dennis): Day 13 finished.
 /// TODO(Dennis): Capture Debug strings to a file?
 
 /*
@@ -608,6 +608,7 @@ WinMain(HINSTANCE Instance,
                       /// XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE
 
                       /// TODO(Dennis): Min/Max macros!!!
+                      /// TODO(Dennis): Collapse to single function
                       real32 X;
                       if(Pad->sThumbLX < 0)
                       {
