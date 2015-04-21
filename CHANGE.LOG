@@ -1,6 +1,16 @@
 Known bugs:
 -Screen flickers when the resolution is not 1280 by 720.
 
+Version 0.0.2 (build 54):
+-Finished moving the input to the non-platform specific code.
+-Small bugfix from build 52.
+-Added more TODO's.
+-Added an util.
+-The left thumbstick now controlls the left/right movement and the tonehz.
+
+Version 0.0.2 (build 53):
+-Started moving input to the non-platform specific code.
+
 Version 0.0.2 (build 52):
 -Finished the QA.
 -Added some TODO's.
