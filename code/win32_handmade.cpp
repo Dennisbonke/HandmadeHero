@@ -1,4 +1,4 @@
-/// NOTE(Dennis): Finished Day 14, QA is next.
+/// NOTE(Dennis): Finished Day 14.
 /// TODO(Dennis): Capture Debug strings to a file?
 
 /*
@@ -555,15 +555,16 @@ WinMain(HINSTANCE Instance,
 /// NOTE(Dennis): Did Casey mess it up here?? I think so! Should be the other way around, right?
 /// NOTE(Dennis): 2 minutes later.... Casey:"Oh, I flipped the cases around!" I knew it!
 #if HANDMADE_INTERNAL
-          LPVOID BaseAddress = (LPVOID)Terabytes((uint64)2);
+          LPVOID BaseAddress = (LPVOID)Terabytes(2);
 #else
           LPVOID BaseAddress = 0;
 #endif // HANDMADE_INTERNAL
 
           game_memory GameMemory = {};
           GameMemory.PermanentStorageSize = Megabytes(64);
-          GameMemory.TransientStorageSize = Gigabytes((uint64)4);
+          GameMemory.TransientStorageSize = Gigabytes(4);
 
+          /// TODO(Dennis): Handle various memory footprints (USING SYSTEM METRICS)
           uint64 TotalSize = GameMemory.PermanentStorageSize + GameMemory.TransientStorageSize;
           GameMemory.PermanentStorage = VirtualAlloc(BaseAddress, TotalSize,
                                                      MEM_RESERVE|MEM_COMMIT, PAGE_READWRITE);

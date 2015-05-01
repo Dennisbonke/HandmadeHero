@@ -12,15 +12,16 @@ HANDMADE_SLOW:
 */
 
 #if HANDMADE_SLOW
+/// TODO(Dennis): Complete assertion macro - don't worry everyone!
 #define Assert(Expression) if(!(Expression)) {*(int *)0 = 0;}
 #else
 #define Assert(Expression)
 #endif // HANDMADE_SLOW
 
-#define Kilobytes(Value) ((Value)*1024)
-#define Megabytes(Value) (Kilobytes(Value)*1024)
-#define Gigabytes(Value) (Megabytes(Value)*1024)
-#define Terabytes(Value) (Gigabytes(Value)*1024)
+#define Kilobytes(Value) ((Value)*1024LL)
+#define Megabytes(Value) (Kilobytes(Value)*1024LL)
+#define Gigabytes(Value) (Megabytes(Value)*1024LL)
+#define Terabytes(Value) (Gigabytes(Value)*1024LL)
 
 #define ArrayCount(Array) (sizeof(Array) / sizeof((Array)[0]))
 /// TODO(Dennis): swap, min, max ... macros???
