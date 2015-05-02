@@ -2,6 +2,17 @@ Known bugs:
 -Screen flickers when the resolution is not 1280 by 720.
 -On my crappy coding laptop, the sound is awful to listen to.
 
+Version 0.0.2 (build 60):
+-Finished debug basic File IO.
+-Added File IO write abilities.
+-File IO now writes handmade.cpp to test.out before clearing the memory, this file can be found in the executables directory.
+
+Version 0.0.2 (build 59):
+-Started implementing basic File IO.
+-Added an util.
+-Added some TODO's.
+-File IO reads handmade.cpp in memory and frees it right after on the first frame.
+
 Version 0.0.2 (build 58):
 -Finished the QA.
 -Updated README.md.
