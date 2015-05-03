@@ -1,4 +1,4 @@
-/// NOTE(Dennis): Finished Day 15, QA is next.
+/// NOTE(Dennis): Finished Day 15.
 /// TODO(Dennis): Capture Debug strings to a file?
 
 /*

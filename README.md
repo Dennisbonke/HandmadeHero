@@ -17,7 +17,7 @@ This program / game has not been tested on all systems. The plan is that this ga
 <h2>Current Version:</h2>
 Version: 0.0.2, build: 60.<br>
 <h2>Current day finished:</h2>
-Week 3, Day 14.<br>
+Week 3, Day 15.<br>
 <h2>Compiler Options</h2>
 If HANDMADE_INTERNAL = 1, it is a dev build and will include dev / debug code. These might not be stable.<br>
 If HANDMADE_INTERNAL = 0, it is a build for public release / shipping build. These _should_ be stable.<br>
@@ -28,5 +28,5 @@ Public release builds should always be compiled with HANDMADE_INTERNAL and HANDM
 <h2>Current Status</h2>
 Status: Early Alpha.<br>
 Main job: Finishing the prototype platform layer.<br>
-Currently working on: Debug file IO.<br>
-Last completed job: Game Memory.<br>
+Currently working on: Comppiler switches.<br>
+Last completed job: Debug file IO.<br>

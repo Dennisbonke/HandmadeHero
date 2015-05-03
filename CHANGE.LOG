@@ -3,6 +3,7 @@ Known bugs:
 -On my crappy coding laptop, the sound is awful to listen to.
 
 Version 0.0.2 (build 60):
+-Finished the QA.
 -Finished debug basic File IO.
 -Added File IO write abilities.
 -File IO now writes handmade.cpp to test.out before clearing the memory, this file can be found in the executables directory.
