@@ -85,6 +85,7 @@ global_variable x_input_set_state *XInputSetState_ = XInputSetStateStub;
 #define DIRECT_SOUND_CREATE(name) HRESULT WINAPI name(LPCGUID pcGuidDevice, LPDIRECTSOUND *ppDS, LPUNKNOWN pUnkOuter);
 typedef DIRECT_SOUND_CREATE(direct_sound_create);
 
+#if HANDMADE_INTERNAL
 internal debug_read_file_result
 DEBUGPlatformReadEntireFile(char *Filename)
 {
@@ -168,6 +169,7 @@ DEBUGPlatformWriteEntireFile(char *Filename, uint32 MemorySize, void *Memory)
 
     return(Result);
 }
+#endif // HANDMADE_INTERNAL
 
 internal void
 Win32LoadXInput(void)

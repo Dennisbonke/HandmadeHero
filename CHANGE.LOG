@@ -2,6 +2,9 @@ Known bugs:
 -Screen flickers when the resolution is not 1280 by 720.
 -On my crappy coding laptop, the sound is awful to listen to.
 
+Version 0.0.2 (build 64):
+-Restored release compilability.
+
 Version 0.0.2 (build 63):
 -Finished the QA.
 -Added some more compiler flags.
