@@ -15,7 +15,7 @@ This program / game has not been tested on all systems. The plan is that this ga
 -[BUG] Screen flickers when the resolution is not 1280 by 720.<br>
 -[NOTE/BUG] On my crappy coding laptop, the sound is awful to listen to.<br>
 <h2>Current Version:</h2>
-Version: 0.0.2, build: 64.<br>
+Version: 0.0.2, build: 69.<br>
 <h2>Current day finished:</h2>
 Week 4, Day 16.<br>
 <h2>Compiler Options</h2>
@@ -30,3 +30,7 @@ Status: Early Alpha.<br>
 Main job: Finishing the prototype platform layer.<br>
 Currently working on: Keyboard input.<br>
 Last completed job: Compiler switches.<br>
+<h2>Controlls:</h2>
+When using the XBOX360 controller, the left joystick controlls the up/down movement when moving the joystick up and down, when moving the stick left or right, the tonehz will change.<br>
+You can also use the D-Pad for this (I hope).<br>
+When using a keyboard, the down arrow will move the screen down, the A Key will move the screen to the left and the D Key will move the screen to the right.

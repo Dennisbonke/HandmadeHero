@@ -78,25 +78,38 @@ GameUpdateAndRender(game_memory *Memory, game_input *Input, game_offscreen_buffe
         Memory->IsInitialized = true;
     }
 
-    game_controller_input *Input0 = &Input->Controllers[0];
-    if(Input0->IsAnalog)
+    for(int ControllerIndex = 0;
+        ControllerIndex < ArrayCount(Input->Controllers);
+        ++ControllerIndex)
     {
-        /// NOTE(Dennis): Use analog movement tuning
-        GameState->BlueOffset += (int)(4.0f*Input0->EndX);
-        GameState->ToneHz = 512 + (int)(128.0f*Input0->EndY);
-    }
-    else
-    {
-        /// NOTE(Dennis): Use digital movement tuning
-    }
+        game_controller_input *Controller = GetController(Input, ControllerIndex);
+        if(Controller->IsAnalog)
+        {
+            /// NOTE(Dennis): Use analog movement tuning
+            GameState->BlueOffset += (int)(4.0f*Controller->StickAverageX);
+            GameState->ToneHz = 512 + (int)(128.0f*Controller->StickAverageY);
+        }
+        else
+        {
+            /// NOTE(Dennis): Use digital movement tuning
+            if(Controller->MoveLeft.EndedDown)
+            {
+                GameState->BlueOffset -= 1;
+            }
 
-    /// Input.AButtonEndedDown;
-    /// Input.AButtonHalfTransitionCount;
-    if(Input0->Down.EndedDown)
-    {
-        GameState->GreenOffset += 1;
-    }
+            if(Controller->MoveRight.EndedDown)
+            {
+                GameState->BlueOffset += 1;
+            }
+        }
 
+        /// Input.AButtonEndedDown;
+        /// Input.AButtonHalfTransitionCount;
+        if(Controller->ActionDown.EndedDown)
+        {
+            GameState->GreenOffset += 1;
+        }
+    }
     /// TODO(Dennis): Allow sample offsets here for more robust platform options
     GameOutputSound(SoundBuffer, GameState->ToneHz);
     RenderWeirdGradient(Buffer, GameState->BlueOffset, GameState->GreenOffset);
