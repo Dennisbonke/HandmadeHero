@@ -15,9 +15,9 @@ This program / game has not been tested on all systems. The plan is that this ga
 -[BUG] Screen flickers when the resolution is not 1280 by 720.<br>
 -[NOTE/BUG] On my crappy coding laptop, the sound is awful to listen to.<br>
 <h2>Current Version:</h2>
-Version: 0.0.2, build: 69.<br>
+Version: 0.0.2, build: 70.<br>
 <h2>Current day finished:</h2>
-Week 4, Day 16.<br>
+Week 4, Day 17.<br>
 <h2>Compiler Options</h2>
 If HANDMADE_INTERNAL = 1, it is a dev build and will include dev / debug code. These might not be stable.<br>
 If HANDMADE_INTERNAL = 0, it is a build for public release / shipping build. These _should_ be stable.<br>
@@ -28,8 +28,8 @@ Public release builds should always be compiled with HANDMADE_INTERNAL and HANDM
 <h2>Current Status</h2>
 Status: Early Alpha.<br>
 Main job: Finishing the prototype platform layer.<br>
-Currently working on: Keyboard input.<br>
-Last completed job: Compiler switches.<br>
+Currently working on: Enforcing an framerate.<br>
+Last completed job: Keyboard input.<br>
 <h2>Controlls:</h2>
 When using the XBOX360 controller, the left joystick controlls the up/down movement when moving the joystick up and down, when moving the stick left or right, the tonehz will change.<br>
 You can also use the D-Pad for this (I hope).<br>
