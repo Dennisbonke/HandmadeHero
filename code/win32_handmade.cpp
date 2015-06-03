@@ -1,7 +1,7 @@
 /// NOTE(Dennis): Finished Day 17.
 /// TODO(Dennis): Capture Debug strings to a file?
 
-/*
+/**
    TODO(Dennis): THIS IS NOT A FINAL PLATFORM LAYER!!!
 
    - Saved game locations
@@ -333,7 +333,7 @@ Win32DisplayBufferInWindow(win32_offscreen_buffer *Buffer,
     /// TODO(Dennis): Aspect ratio correction
     /// TODO(Dennis): Play with stretch modes
     StretchDIBits(DeviceContext,
-                  /*
+                  /**
                   X, Y, Width, Height,
                   X, Y, Width, Height,
                   */

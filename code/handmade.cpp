@@ -37,7 +37,7 @@ RenderWeirdGradient(game_offscreen_buffer *Buffer, int BlueOffset, int GreenOffs
 		    X < Buffer->Width;
 		    X++)
 		{
-			/*
+			/**
 			Little Endian
 			Pixel in Memory: BB GG RR xx
 			0x xxRRGGBB

@@ -1,6 +1,6 @@
 #if !defined(HANDMADE_H)
 
-/*
+/**
    NOTE(Dennis):
 HANDMADE_INTERNAL:
   0 - Build for public release
@@ -35,7 +35,7 @@ SafeTruncateUInt64(uint64 Value)
     return(Result);
 }
 
-/*
+/**
     NOTE(Dennis): Services that the platform layer provides to the game.
 */
 
@@ -51,7 +51,7 @@ internal void DEBUGPlatformFreeFileMemory(void *Memory);
 internal bool32 DEBUGPlatformWriteEntireFile(char *Filename, uint32 MemorySize, void *Memory);
 #endif // HANDMADE_INTERNAL
 
-/*
+/**
     NOTE(Dennis): Services that the game provides to the platform layer.
     (this may expand in the future - sound on separate thread, etc.)
 */
