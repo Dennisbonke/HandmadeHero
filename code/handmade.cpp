@@ -102,6 +102,7 @@ GameUpdateAndRender(game_memory *Memory, game_input *Input, game_offscreen_buffe
             {
                 GameState->BlueOffset += 1;
             }
+
         }
 
         /// Input.AButtonEndedDown;

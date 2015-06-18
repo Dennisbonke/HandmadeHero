@@ -7,7 +7,7 @@ This program / game has not been tested on all systems. The plan is that this ga
 -Windows 7 (all editions).<br>
 -Windows 8 (all editions).<br>
 -Windows 8.1 (all editions).<br>
--Windows 10 (all editions).<br>
+-Windows 10 (all editions, I hope).<br>
 <h2>Important notes:</h2>
 -This program will NOT work on anything less than Windows XP!<br>
 -I love to get bugreports, it means people are helping me! Before issuing a bugreport, please confirm that your operating system is supported!<br>
@@ -16,9 +16,9 @@ This program / game has not been tested on all systems. The plan is that this ga
 -[BUG] Screen flickers when the resolution is not 1280 by 720.<br>
 -[NOTE/BUG] On my crappy coding laptop, the sound is awful to listen to.<br>
 <h2>Current Version:</h2>
-Version: 0.0.2, build: 70.<br>
+Version: 0.0.2, build: 71.<br>
 <h2>Current day finished:</h2>
-Week 4, Day 17.<br>
+Week 4, Day 18.<br>
 <h2>Compiler Options</h2>
 If HANDMADE_INTERNAL = 1, it is a dev build and will include dev / debug code. These might not be stable.<br>
 If HANDMADE_INTERNAL = 0, it is a build for public release / shipping build. These _should_ be stable.<br>
