@@ -1,4 +1,4 @@
-/// NOTE(Dennis): Finished day 18, QA is next.
+/// NOTE(Dennis): Finished day 18.
 /// TODO(Dennis): Capture Debug strings to a file?
 
 /**
@@ -882,6 +882,7 @@ WinMain(HINSTANCE Instance,
                     SoundIsValid = true;
                 }
 
+                /// TODO(Dennis): Sound is wrong now, because we haven't updated it to go with the new frame loop.
                 game_sound_output_buffer SoundBuffer = {};
                 SoundBuffer.SamplesPerSecond = SoundOutput.SamplesPerSecond;
                 SoundBuffer.SampleCount = BytesToWrite / SoundOutput.BytesPerSample;
@@ -894,29 +895,30 @@ WinMain(HINSTANCE Instance,
                 Buffer.Pitch = GlobalBackbuffer.Pitch;
                 GameUpdateAndRender(&GameMemory, NewInput, &Buffer, &SoundBuffer);
 
-                /// NOTE(Dennis): DirectSound output test
                 if(SoundIsValid)
                 {
                     Win32FillSoundBuffer(&SoundOutput, ByteToLock, BytesToWrite, &SoundBuffer);
                 }
 
-                uint64 EndCycleCount = __rdtsc();
-                uint64 CyclesElapsed = EndCycleCount - LastCycleCount;
-                LastCycleCount = EndCycleCount;
-
                 LARGE_INTEGER WorkCounter = Win32GetWallClock();
                 real32 WorkSecondsElapsed = Win32GetSecondsElapsed(LastCounter, WorkCounter);
 
+                /// TODO(Dennis): NOT TESTED YET! PROBABLY BUGGY!!!!!
                 real32 SecondsElapsedForFrame = WorkSecondsElapsed;
                 if(SecondsElapsedForFrame < TargetSecondsPerFrame)
                 {
+                    if(SleepIsGranular)
+                    {
+                            DWORD SleepMS = (DWORD)(1000.f * (TargetSecondsPerFrame -
+                                                              SecondsElapsedForFrame));
+                            if(SleepMS > 0)
+                            {
+                                Sleep(SleepMS);
+                            }
+                    }
+
                     while(SecondsElapsedForFrame < TargetSecondsPerFrame)
                     {
-                        if(SleepIsGranular)
-                        {
-                            DWORD SleepMS = (DWORD)(1000.f * (TargetSecondsPerFrame - SecondsElapsedForFrame));
-                            Sleep(SleepMS);
-                        }
                         SecondsElapsedForFrame = Win32GetSecondsElapsed(LastCounter,
                                                                         Win32GetWallClock());
                     }
@@ -931,24 +933,28 @@ WinMain(HINSTANCE Instance,
                 Win32DisplayBufferInWindow(&GlobalBackbuffer, DeviceContext,
                                             Dimension.Width, Dimension.Height);
 
-                int64 CounterElapsed = WorkCounter.QuadPart - LastCounter.QuadPart;
-                real64 MSPerFrame = (((1000.0f*(real64)CounterElapsed) / (real64)GlobalPerfCountFrequency));
-                real64 FPS = (real64)GlobalPerfCountFrequency / (real64)CounterElapsed;
-                real64 MCPF = ((real64)CyclesElapsed / (1000.0f * 1000.0f));
-
-#if HANDMADE_INTERNAL
-                char TextBuffer[256];
-                sprintf_s(TextBuffer, "%.02fms/f, %.02ff/s, %.02fmc/f\n", MSPerFrame, FPS, MCPF);
-                OutputDebugStringA(TextBuffer);
-#endif // HANDMADE_INTERNAL
-
-                LARGE_INTEGER EndCounter = Win32GetWallClock();
-                LastCounter = EndCounter;
-
                 game_input *Temp = NewInput;
                 NewInput = OldInput;
                 OldInput = Temp;
                 /// TODO(Dennis): Should I clear these here?
+
+                LARGE_INTEGER EndCounter = Win32GetWallClock();
+                real32 MSPerFrame = 1000.0f*Win32GetSecondsElapsed(LastCounter ,EndCounter);
+                LastCounter = EndCounter;
+
+                uint64 EndCycleCount = __rdtsc();
+                uint64 CyclesElapsed = EndCycleCount - LastCycleCount;
+                LastCycleCount = EndCycleCount;
+
+                int64 CounterElapsed = WorkCounter.QuadPart - LastCounter.QuadPart;
+                real64 FPS = 0.0f;
+                real64 MCPF = ((real64)CyclesElapsed / (1000.0f * 1000.0f));
+
+#if HANDMADE_INTERNAL
+                char FPSBuffer[256];
+                sprintf_s(FPSBuffer, "%.02fms/f, %.02ff/s, %.02fmc/f\n", MSPerFrame, FPS, MCPF);
+                OutputDebugStringA(FPSBuffer);
+#endif // HANDMADE_INTERNAL
             }
          }
          else

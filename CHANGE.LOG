@@ -2,6 +2,13 @@ Known bugs:
 -Screen flickers when the resolution is not 1280 by 720.
 -On my crappy coding laptop, the sound is awful to listen to.
 
+Version 0.0.2 (build 72):
+-I wasn't done yet with the code part!!
+-Also, finished the QA.
+-Fixed the code performance code.
+-Disabled the FPS.
+-Added some TODO's, probably for tomorrow.
+
 Version 0.0.2 (build 71):
 -Worked on some proper timing.
 -Clean-up of the timing clock values code.
