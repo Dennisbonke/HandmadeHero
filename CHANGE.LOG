@@ -2,6 +2,23 @@ Known bugs:
 -Screen flickers when the resolution is not 1280 by 720.
 -On my crappy coding laptop, the sound is awful to listen to.
 
+Version 0.0.2 (build 75):
+-More sound, again.
+-Added some TODO's.
+-Added some debug test code to see how good/bad my sound card is.
+-Sound will continue at day 20, because it is still a mess.
+-Found out that DirectSound is bad for latency.
+
+Version 0.0.2 (build 74):
+-Fixed the bugs from build 73.
+-Changed some timing stuff again.
+-More drawing of debug sound.
+
+Version 0.0.2 (build 73):
+-Started working on some sound logic clean-up.
+-Started adding debug information on screen for where we are with sound.
+-Added some more debug stuff.
+
 Version 0.0.2 (build 72):
 -I wasn't done yet with the code part!!
 -Also, finished the QA.
