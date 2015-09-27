@@ -1,4 +1,4 @@
-/// NOTE(Dennis): Working on day 19, QA is next.
+/// NOTE(Dennis): Finished Day 19.
 /// TODO(Dennis): Capture Debug strings to a file?
 
 /**
@@ -705,6 +705,8 @@ WinMain(HINSTANCE Instance,
   WindowClass.lpszClassName = "HandmadeHeroWindowClass";
 
   /// TODO(Dennis): How do we reliably query on this on Windows?
+  /// TODO(Dennis): Let's think about running non-frame-quantized for audio latency...
+  /// TODO(Dennis): Let's use the write cursor delta from the play cursor to adjust the target audio latency.
   /// TODO(Dennis): Tweak the FramesOfAudioLatency.
 #define FramesOfAudioLatency 4
 #define MonitorRefreshHz 60

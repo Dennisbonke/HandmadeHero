@@ -8,6 +8,7 @@ Version 0.0.2 (build 75):
 -Added some debug test code to see how good/bad my sound card is.
 -Sound will continue at day 20, because it is still a mess.
 -Found out that DirectSound is bad for latency.
+-Finished the QA.
 
 Version 0.0.2 (build 74):
 -Fixed the bugs from build 73.
