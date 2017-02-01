@@ -1,4 +1,4 @@
-/// NOTE(Dennis): Finished Day 19.
+/// NOTE(Dennis): Working on day 20, left at 7:13.
 /// TODO(Dennis): Capture Debug strings to a file?
 
 /**
@@ -654,6 +654,7 @@ Win32DrawSoundBufferMarker(win32_offscreen_buffer *Backbuffer,
     Win32DebugDrawVertical(Backbuffer, X, Top, Bottom, Color);
 }
 
+#if HANDMADE_INTERNAL
 internal void
 Win32DebugSyncDisplay(win32_offscreen_buffer *Backbuffer,
                       int MarkerCount, win32_debug_time_marker *Markers,
@@ -677,6 +678,7 @@ Win32DebugSyncDisplay(win32_offscreen_buffer *Backbuffer,
         Win32DrawSoundBufferMarker(Backbuffer, SoundOutput, C, PadX, Top, Bottom, ThisMarker->WriteCursor, 0xFFFF0000);
     }
 }
+#endif
 
 int CALLBACK
 WinMain(HINSTANCE Instance,
@@ -1010,6 +1012,9 @@ WinMain(HINSTANCE Instance,
                 }
                 else
                 {
+                    OutputDebugStringA("ERROR!\n");
+                    Sleep(100);
+                    return -1;
                     /// TODO(Dennis): MISSED FRAME RATE!
                     /// TODO(Dennis): Logging
                 }
@@ -1045,8 +1050,9 @@ WinMain(HINSTANCE Instance,
 #if HANDMADE_INTERNAL
                 /// NOTE(Dennis): This is debug code
                 {
+                   Assert(DebugTimeMarkerIndex <= ArrayCount(DebugTimeMarkers));
                    win32_debug_time_marker *Marker = &DebugTimeMarkers[DebugTimeMarkerIndex++];
-                   if(DebugTimeMarkerIndex > ArrayCount(DebugTimeMarkers))
+                   if(DebugTimeMarkerIndex == ArrayCount(DebugTimeMarkers))
                    {
                        DebugTimeMarkerIndex = 0;
                    }

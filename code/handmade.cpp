@@ -111,6 +111,10 @@ GameUpdateAndRender(game_memory *Memory, game_input *Input, game_offscreen_buffe
         {
             GameState->GreenOffset += 1;
         }
+        if(Controller->ActionUp.EndedDown)
+        {
+            GameState->GreenOffset -= 1;
+        }
     }
     /// TODO(Dennis): Allow sample offsets here for more robust platform options
     GameOutputSound(SoundBuffer, GameState->ToneHz);

@@ -2,6 +2,11 @@ Known bugs:
 -Screen flickers when the resolution is not 1280 by 720.
 -On my crappy coding laptop, the sound is awful to listen to.
 
+Version 0.0.2 (Build 76):
+-Fixed an off by one error.
+-Added up movement.
+-Updated build scripts to work on my main pc.
+
 Version 0.0.2 (build 75):
 -More sound, again.
 -Added some TODO's.
@@ -82,7 +87,7 @@ Version 0.0.2 (build 61):
 -Fixed possible loss of data warnings.
 -Fixed MaxControllerCount beeing an integer, while it should be a DWORD.
 -Shrinked the executable's filesize by 3 times.
--Transient storage now asks for 1 gigabyte instead of 4 gigabytes. 
+-Transient storage now asks for 1 gigabyte instead of 4 gigabytes.
 -Some code cleanup.
 
 Version 0.0.2 (build 60):
