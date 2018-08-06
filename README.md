@@ -16,7 +16,7 @@ This program / game has not been tested on all systems. The plan is that this ga
 -[BUG] Screen flickers when the resolution is not 1280 by 720.<br>
 -[NOTE/BUG] On my crappy coding laptop, the sound is awful to listen to.<br>
 <h2>Current Version:</h2>
-Version: 0.0.2, build: 76.<br>
+Version: 0.0.2, build: 77.<br>
 <h2>Current day finished:</h2>
 Week 4, Day 19.<br>
 <h2>Compiler Options</h2>
