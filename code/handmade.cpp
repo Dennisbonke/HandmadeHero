@@ -56,8 +56,7 @@ RenderWeirdGradient(game_offscreen_buffer *Buffer, int BlueOffset, int GreenOffs
 	}
 }
 
-internal void
-GameUpdateAndRender(game_memory *Memory, game_input *Input, game_offscreen_buffer *Buffer)
+extern "C" GAME_UPDATE_AND_RENDER(GameUpdateAndRender)
 {
     Assert((&Input->Controllers[0].Terminator - &Input->Controllers[0].Buttons[0]) == (ArrayCount(Input->Controllers[0].Buttons)));
     Assert(sizeof(game_state) <= Memory->PermanentStorageSize);
@@ -68,11 +67,11 @@ GameUpdateAndRender(game_memory *Memory, game_input *Input, game_offscreen_buffe
 #if HANDMADE_INTERNAL
         char *Filename = __FILE__;
 
-        debug_read_file_result File = DEBUGPlatformReadEntireFile(Filename);
+        debug_read_file_result File = Memory->DEBUGPlatformReadEntireFile(Filename);
         if(File.Contents)
         {
-            DEBUGPlatformWriteEntireFile("test.out", File.ContentsSize, File.Contents);
-            DEBUGPlatformFreeFileMemory(File.Contents);
+            Memory->DEBUGPlatformWriteEntireFile("test.out", File.ContentsSize, File.Contents);
+            Memory->DEBUGPlatformFreeFileMemory(File.Contents);
         }
 #endif // HANDMADE_INTERNAL
 
@@ -125,9 +124,20 @@ GameUpdateAndRender(game_memory *Memory, game_input *Input, game_offscreen_buffe
     RenderWeirdGradient(Buffer, GameState->BlueOffset, GameState->GreenOffset);
 }
 
-internal void
-GameGetSoundSamples(game_memory *Memory, game_sound_output_buffer *Soundbuffer)
+extern "C" GAME_GET_SOUND_SAMPLES(GameGetSoundSamples)
 {
     game_state *GameState = (game_state *)Memory->PermanentStorage;
-    GameOutputSound(Soundbuffer, GameState->ToneHz);
+    GameOutputSound(SoundBuffer, GameState->ToneHz);
 }
+
+//#if HANDMADE_WIN32
+#if 1
+#include "windows.h"
+BOOL WINAPI DllMain(
+            HINSTANCE hinstDLL,
+            DWORD fdwReason,
+            LPVOID lpvReserved)
+{
+    return(TRUE);
+}
+#endif // HANDMADE_WIN32

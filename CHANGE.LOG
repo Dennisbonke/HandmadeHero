@@ -1,6 +1,9 @@
 Known bugs:
 -Screen flickers when the resolution is not 1280 by 720.
 
+Version 0.0.2 (Build 79):
+- Trying to create an DLL with the game code so we can reload that without restarting the game (for now makes handmade.exe and win32_handmade.exe, the latter is the main entry point).
+
 Version 0.0.2 (Build 78):
 - More audio sync tweaks, we know how we want to do the audio.
 - Checking if the sound card is latent or not, if yes, we compute the audio differently, if not, we assume we can get perfect audio sync and we compute for that.
