@@ -7,7 +7,7 @@ HANDMADE_INTERNAL:
   1 - Build for developer only
 
 HANDMADE_SLOW:
-  0 - Not slow code allowed!
+  0 - No slow code allowed!
   1 - Slow code welcome!
 */
 
@@ -141,8 +141,13 @@ struct game_memory
     void *TransientStorage; /// NOTE(Dennis): REQUIRED to be cleared to zero at startup
 };
 
-internal void GameUpdateAndRender(game_memory *Memory, game_input *Input, game_offscreen_buffer *Buffer,
-                                  game_sound_output_buffer *SoundBuffer);
+internal void GameUpdateAndRender(game_memory *Memory, game_input *Input, game_offscreen_buffer *Buffer);
+
+/// NOTE(Dennis): At the moment, this has to be a very fast function, it cannot be
+/// more than a millisecond or so.
+/// TODO(Dennis): Reduce the pressure on this function's performance by measuring it
+/// or asking about it, etc.
+internal void GameGetSoundSamples(game_memory *Memory, game_sound_output_buffer *SoundBuffer);
 
 ///
 ///

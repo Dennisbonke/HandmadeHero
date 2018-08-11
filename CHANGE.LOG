@@ -1,6 +1,14 @@
 Known bugs:
 -Screen flickers when the resolution is not 1280 by 720.
--On my crappy coding laptop, the sound is awful to listen to.
+
+Version 0.0.2 (Build 78):
+- More audio sync tweaks, we know how we want to do the audio.
+- Checking if the sound card is latent or not, if yes, we compute the audio differently, if not, we assume we can get perfect audio sync and we compute for that.
+- Some refactoring of audio code.
+- Sound is independent from the GameUpdateAndRender code.
+- We print more markers in the debug code now, also added some sanity checks.
+- P pauses the screen, in dev builds.
+- Fixed an sine wave bug, where the sound would change frequency at random without input. Turns out sine loses floating-point precision pretty fast here.
 
 Version 0.0.2 (Build 77):
 - Some small audio tweaks, we now compute the delta latency, so we know how much latency the audio card has.
