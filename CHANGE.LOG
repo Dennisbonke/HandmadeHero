@@ -1,6 +1,21 @@
 Known bugs:
 -Screen flickers when the resolution is not 1280 by 720.
 
+Version 0.0.2 (Build 81):
+- We now reload the DLL whenever the DLL's last write time has changed from the currently loaded DLL's write time, which we save on load.
+- Fixed a bug where pressing P would trigger the GlobalPause function in release builds.
+- Fixed the build scripts to disable incremental builds for the DLL as well and make a new .pdb file so the debugger doesn't lock it, enabling live code editing while we are running in the debugger.
+- Fixed the build scripts for 32-bit to actually output a DLL for 32-bit.
+- Fixed the build scripts to optimize away functions and data that is never referenced when producing a DLL.
+- Fixed a bug where there was a persistent variable in the DLL, that is defeating the point of a DLL, so we now just pass that in the GameState struct, as we should have.
+- Removed dllMain, it isn't necessary, as Windows will insert one which returns TRUE, which we did as well.
+- Fixed my include guards to match my preference in other projects.
+- Moved the GameCode struct to the win32_handmade.h file.
+- Added a emacs start batch file, I switched editors, the .emacs file you need to create for yourself or pre-order HandmadeHero to get Casey's (which I'm using), I won't redistribute that one.
+
+Version 0.0.2 (Build 80):
+- Some more fixing of DLL code generation, we now output a actual .dll file.
+
 Version 0.0.2 (Build 79):
 - Trying to create an DLL with the game code so we can reload that without restarting the game (for now makes handmade.exe and win32_handmade.exe, the latter is the main entry point).
 

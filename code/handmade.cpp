@@ -1,9 +1,8 @@
 #include "handmade.h"
 
 internal void
-GameOutputSound(game_sound_output_buffer *SoundBuffer, int ToneHz)
+GameOutputSound(game_state *GameState, game_sound_output_buffer *SoundBuffer, int ToneHz)
 {
-    local_persist real32 tSine;
     int16 ToneVolume = 6000;
     int WavePeriod = SoundBuffer->SamplesPerSecond/ToneHz;
 
@@ -13,15 +12,15 @@ GameOutputSound(game_sound_output_buffer *SoundBuffer, int ToneHz)
         ++SampleIndex)
     {
         /// TODO(Dennis): Draw this out for people
-        real32 SineValue = sinf(tSine);
+        real32 SineValue = sinf(GameState->tSine);
         int16 SampleValue = (int16)(SineValue * ToneVolume);
         *SampleOut++ = SampleValue;
         *SampleOut++ = SampleValue;
 
-        tSine += 2.0f * Pi32 * 1.0f / (real32)WavePeriod;
-        if(tSine > 2.0f*Pi32)
+        GameState->tSine += 2.0f * Pi32 * 1.0f / (real32)WavePeriod;
+        if(GameState->tSine > 2.0f*Pi32)
         {
-            tSine -= 2.0f*Pi32;
+            GameState->tSine -= 2.0f*Pi32;
         }
     }
 }
@@ -32,28 +31,28 @@ RenderWeirdGradient(game_offscreen_buffer *Buffer, int BlueOffset, int GreenOffs
 
     uint8 *Row = (uint8 *)Buffer->Memory;
 
-	for(int Y=0;
+    for(int Y=0;
         Y < Buffer->Height;
         Y++)
-	{
-		uint32 *Pixel = (uint32 *) Row;
-		for(int X=0;
-		    X < Buffer->Width;
-		    X++)
-		{
-			/**
-			Little Endian
-			Pixel in Memory: BB GG RR xx
-			0x xxRRGGBB
-			*/
-			uint8 Blue = (uint8)(X + BlueOffset);
-			uint8 Green = (uint8)(Y + GreenOffset);
+    {
+        uint32 *Pixel = (uint32 *) Row;
+        for(int X=0;
+            X < Buffer->Width;
+            X++)
+        {
+            /**
+            Little Endian
+            Pixel in Memory: BB GG RR xx
+            0x xxRRGGBB
+            */
+            uint8 Blue = (uint8)(X + BlueOffset);
+            uint8 Green = (uint8)(Y + GreenOffset);
 
-			*Pixel++ = ((Green << 8) | Blue);
-		}
+            *Pixel++ = ((Green << 8) | Blue);
+        }
 
-		Row = Row + Buffer->Pitch;
-	}
+        Row = Row + Buffer->Pitch;
+    }
 }
 
 extern "C" GAME_UPDATE_AND_RENDER(GameUpdateAndRender)
@@ -76,6 +75,7 @@ extern "C" GAME_UPDATE_AND_RENDER(GameUpdateAndRender)
 #endif // HANDMADE_INTERNAL
 
         GameState->ToneHz = 512;
+        GameState->tSine = 0.0f;
 
         /// TODO(Dennis): This may be more appropriate to do in the platform layer
         Memory->IsInitialized = true;
@@ -127,17 +127,5 @@ extern "C" GAME_UPDATE_AND_RENDER(GameUpdateAndRender)
 extern "C" GAME_GET_SOUND_SAMPLES(GameGetSoundSamples)
 {
     game_state *GameState = (game_state *)Memory->PermanentStorage;
-    GameOutputSound(SoundBuffer, GameState->ToneHz);
+    GameOutputSound(GameState, SoundBuffer, GameState->ToneHz);
 }
-
-//#if HANDMADE_WIN32
-#if 1
-#include "windows.h"
-BOOL WINAPI DllMain(
-            HINSTANCE hinstDLL,
-            DWORD fdwReason,
-            LPVOID lpvReserved)
-{
-    return(TRUE);
-}
-#endif // HANDMADE_WIN32

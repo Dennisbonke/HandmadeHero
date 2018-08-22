@@ -1,4 +1,5 @@
-#if !defined(HANDMADE_H)
+#ifndef HANDMADE_H
+#define HANDMADE_H
 
 /**
    NOTE(Dennis):
@@ -64,7 +65,7 @@ SafeTruncateUInt64(uint64 Value)
 */
 
 #if HANDMADE_INTERNAL
-/// NOTE(Dennis): These are NOT for doing anything in the shipping game - they are blocking and the write does not protect against lost data!
+/// IMPORTANT(Dennis): These are NOT for doing anything in the shipping game - they are blocking and the write does not protect against lost data!
 struct debug_read_file_result
 {
     uint32 ContentsSize;
@@ -202,7 +203,7 @@ struct game_state
     int ToneHz;
     int GreenOffset;
     int BlueOffset;
+    real32 tSine;
 };
 
-#define HANDMADE_H
 #endif

@@ -1,4 +1,5 @@
-#if !defined(WIN32_HANDMADE_H)
+#ifndef WIN32_HANDMADE_H
+#define WIN32_HANDMADE_H
 
 struct win32_offscreen_buffer
 {
@@ -42,5 +43,14 @@ struct win32_debug_time_marker
     DWORD FlipWriteCursor;
 };
 
-#define WIN32_HANDMADE_H
+struct win32_game_code
+{
+    HMODULE GameCodeDLL;
+    FILETIME DLLLastWriteTime;
+    game_update_and_render *UpdateAndRender;
+    game_get_sound_samples *GetSoundSamples;
+
+    bool32 IsValid;
+};
+
 #endif

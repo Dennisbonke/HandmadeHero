@@ -1,5 +1,6 @@
-/// NOTE(Dennis): Working on day 21, left at 50:02.
+/// NOTE(Dennis): Working on day 22, left at 40:36.
 /// TODO(Dennis): Capture Debug strings to a file?
+/// TODO(Dennis): Fancy debug messages?
 
 /**
    TODO(Dennis): THIS IS NOT A FINAL PLATFORM LAYER!!!
@@ -144,21 +145,37 @@ DEBUG_PLATFORM_WRITE_ENTIRE_FILE(DEBUGPlatformWriteEntireFile)
     return(Result);
 }
 #endif // HANDMADE_INTERNAL
-struct win32_game_code
-{
-    HMODULE GameCodeDLL;
-    game_update_and_render *UpdateAndRender;
-    game_get_sound_samples *GetSoundSamples;
 
-    bool32 IsValid;
-};
+inline FILETIME
+Win32GetLastWriteTime(char *Filename)
+{
+    FILETIME LastWriteTime = {};
+    
+    WIN32_FIND_DATA FindData;
+    HANDLE FindHandle = FindFirstFileA(Filename, &FindData);
+    if(FindHandle != INVALID_HANDLE_VALUE)
+    {
+        LastWriteTime = FindData.ftLastWriteTime;
+        FindClose(FindHandle);
+    }
+
+    return(LastWriteTime);
+}
 
 internal win32_game_code
-Win32LoadGameCode(void)
+Win32LoadGameCode(char *SourceDLLName)
 {
     win32_game_code Result = {};
 
-    Result.GameCodeDLL = LoadLibraryA("handmade.exe");
+    /// TODO(Dennis): Need to get the proper path here!
+    /// TODO(Dennis): Automatic determination of when updates are necessary
+
+    char *TempDLLName = "handmade_temp.dll";
+
+    Result.DLLLastWriteTime = Win32GetLastWriteTime(SourceDLLName);
+    
+    CopyFile(SourceDLLName, TempDLLName, FALSE);
+    Result.GameCodeDLL = LoadLibraryA(TempDLLName);
     if(Result.GameCodeDLL)
     {
         Result.UpdateAndRender = (game_update_and_render *)
@@ -186,6 +203,7 @@ Win32UnloadGameCode(win32_game_code *GameCode)
     if(GameCode->GameCodeDLL)
     {
         FreeLibrary(GameCode->GameCodeDLL);
+        GameCode->GameCodeDLL = 0;
     }
 
     GameCode->IsValid = false;
@@ -343,11 +361,11 @@ Win32ResizeDIBSection(win32_offscreen_buffer *Buffer, int Width, int Height)
     Buffer->Info.bmiHeader.biBitCount = 32;
     Buffer->Info.bmiHeader.biCompression = BI_RGB;
 
-	int BitmapMemorySize = (Buffer->Width*Buffer->Height)*Buffer->BytesPerPixel;
-	Buffer->Memory = VirtualAlloc(0, BitmapMemorySize, MEM_RESERVE|MEM_COMMIT, PAGE_READWRITE);
-	Buffer->Pitch = Width*Buffer->BytesPerPixel;
+    int BitmapMemorySize = (Buffer->Width*Buffer->Height)*Buffer->BytesPerPixel;
+    Buffer->Memory = VirtualAlloc(0, BitmapMemorySize, MEM_RESERVE|MEM_COMMIT, PAGE_READWRITE);
+    Buffer->Pitch = Width*Buffer->BytesPerPixel;
 
-	/// TODO(Dennis): Probably clear this to black
+    /// TODO(Dennis): Probably clear this to black
 }
 
 internal void
@@ -614,7 +632,7 @@ Win32ProcessPendingMessages(game_controller_input *KeyboardController)
                     {
                         Win32ProcessKeyboardMessage(&KeyboardController->Back, IsDown);
                     }
-#if 1//HANDMADE_INTERNAL
+#if HANDMADE_INTERNAL
                     else if(VKCode == 'P')
                     {
                         if(IsDown)
@@ -811,7 +829,7 @@ WinMain(HINSTANCE Instance,
           SoundOutput.SamplesPerSecond = 48000;
           SoundOutput.BytesPerSample = sizeof(int16)*2;
           SoundOutput.SecondaryBufferSize = SoundOutput.SamplesPerSecond*SoundOutput.BytesPerSample;
-		  /// TODO(Dennis): Get rid of LatencySampleCount
+          /// TODO(Dennis): Get rid of LatencySampleCount
           SoundOutput.LatencySampleCount = 3*(SoundOutput.SamplesPerSecond / GameUpdateHz);
           /// TODO(Dennis): Actually compute this variance and see
           /// what the lowest reasonable value is.
@@ -885,10 +903,20 @@ WinMain(HINSTANCE Instance,
             real32 AudioLatencySeconds = 0;
             bool32 SoundIsValid = false;
 
+            char *SourceDLLName = "handmade.dll";
+            win32_game_code Game = Win32LoadGameCode(SourceDLLName);
+            uint32 LoadCounter = 0;
+
             uint64 LastCycleCount = __rdtsc();
             while(GlobalRunning)
             {
-                win32_game_code Game = Win32LoadGameCode();
+                FILETIME NewDLLWriteTime = Win32GetLastWriteTime(SourceDLLName);
+                if(CompareFileTime(&NewDLLWriteTime, &Game.DLLLastWriteTime) != 0)
+                {
+                    Win32UnloadGameCode(&Game);
+                    Game = Win32LoadGameCode(SourceDLLName);
+                    LoadCounter = 0;
+                }
 
                 /// TODO(Dennis): Zeroing macro
                 /// TODO(Dennis): We can't zero everything, because the up/down state will be wrong!!!
@@ -1238,8 +1266,6 @@ WinMain(HINSTANCE Instance,
                     }
 #endif // HANDMADE_INTERNAL
                 }
-
-                Win32UnloadGameCode(&Game);
             }
          }
          else
