@@ -7,7 +7,7 @@ This program / game has not been tested on all systems. The plan is that this ga
 -Windows 7 (all editions).<br>
 -Windows 8 (all editions).<br>
 -Windows 8.1 (all editions).<br>
--Windows 10 (all editions, I hope).<br>
+-Windows 10 (all editions).<br>
 <h2>Important notes:</h2>
 -This program will NOT work on anything less than Windows XP!<br>
 -I love to get bugreports, it means people are helping me! Before issuing a bugreport, please confirm that your operating system is supported!<br>
