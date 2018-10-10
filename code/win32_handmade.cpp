@@ -1,4 +1,4 @@
-/// NOTE(Dennis): Working on day 22, left at 40:36.
+/// NOTE(Dennis): Finished day 22.
 /// TODO(Dennis): Capture Debug strings to a file?
 /// TODO(Dennis): Fancy debug messages?
 
@@ -163,14 +163,12 @@ Win32GetLastWriteTime(char *Filename)
 }
 
 internal win32_game_code
-Win32LoadGameCode(char *SourceDLLName)
+Win32LoadGameCode(char *SourceDLLName, char *TempDLLName)
 {
     win32_game_code Result = {};
 
     /// TODO(Dennis): Need to get the proper path here!
-    /// TODO(Dennis): Automatic determination of when updates are necessary
-
-    char *TempDLLName = "handmade_temp.dll";
+    /// TODO(Dennis): Automatic determination of when updates are necessary.
 
     Result.DLLLastWriteTime = Win32GetLastWriteTime(SourceDLLName);
     
@@ -775,6 +773,30 @@ Win32DebugSyncDisplay(win32_offscreen_buffer *Backbuffer,
 }
 #endif
 
+internal void
+CatStrings(size_t SourceACount, char *SourceA,
+           size_t SourceBCount, char *SourceB,
+           size_t DestCount, char *Dest)
+{
+    // TODO(Dennis): Dest bounds checking!
+    
+    for(int Index = 0;
+        Index < SourceACount;
+        ++Index)
+    {
+        *Dest++ = *SourceA++;
+    }
+    
+    for(int Index = 0;
+        Index < SourceBCount;
+        ++Index)
+    {
+        *Dest++ = *SourceB++;
+    }
+
+    *Dest++ = 0;
+}
+
 int CALLBACK
 WinMain(HINSTANCE Instance,
         HINSTANCE PrevInstance,
@@ -783,10 +805,10 @@ WinMain(HINSTANCE Instance,
 {
     /// NOTE(Dennis): Never use MAX_PATH in code that is user-facing, because it
     /// can be dangerous and lead to bad results.
-    char Buffer[MAX_PATH];
-    DWORD SizeOfFilename = GetModuleFileNameA(0, Buffer, sizeof(Buffer));
-    char *OnePastLastSlash = Buffer + SizeOfFilename;
-    for(char *Scan = Buffer;
+    char EXEFileName[MAX_PATH];
+    DWORD SizeOfFilename = GetModuleFileNameA(0, EXEFileName, sizeof(EXEFileName));
+    char *OnePastLastSlash = EXEFileName;
+    for(char *Scan = EXEFileName;
         *Scan;
         ++Scan)
     {
@@ -795,6 +817,18 @@ WinMain(HINSTANCE Instance,
             OnePastLastSlash = Scan + 1;
         }
     }
+
+    char SourceGameCodeDLLFilename[] = "handmade.dll";
+    char SourceGameCodeDLLFullPath[MAX_PATH];
+    CatStrings(OnePastLastSlash - EXEFileName, EXEFileName,
+               sizeof(SourceGameCodeDLLFilename) - 1, SourceGameCodeDLLFilename,
+               sizeof(SourceGameCodeDLLFullPath), SourceGameCodeDLLFullPath);
+
+    char TempGameCodeDLLFilename[] = "handmade_temp.dll";
+    char TempGameCodeDLLFullPath[MAX_PATH];
+    CatStrings(OnePastLastSlash - EXEFileName, EXEFileName,
+               sizeof(TempGameCodeDLLFilename) - 1, TempGameCodeDLLFilename,
+               sizeof(TempGameCodeDLLFullPath), TempGameCodeDLLFullPath);
     
     LARGE_INTEGER PerfCountFrequencyResult;
     QueryPerformanceFrequency(&PerfCountFrequencyResult);
@@ -919,18 +953,19 @@ WinMain(HINSTANCE Instance,
                 real32 AudioLatencySeconds = 0;
                 bool32 SoundIsValid = false;
 
-                char *SourceDLLName = "handmade.dll";
-                win32_game_code Game = Win32LoadGameCode(SourceDLLName);
+                win32_game_code Game = Win32LoadGameCode(SourceGameCodeDLLFullPath,
+                                                         TempGameCodeDLLFullPath);
                 uint32 LoadCounter = 0;
 
                 uint64 LastCycleCount = __rdtsc();
                 while(GlobalRunning)
                 {
-                    FILETIME NewDLLWriteTime = Win32GetLastWriteTime(SourceDLLName);
+                    FILETIME NewDLLWriteTime = Win32GetLastWriteTime(SourceGameCodeDLLFullPath);
                     if(CompareFileTime(&NewDLLWriteTime, &Game.DLLLastWriteTime) != 0)
                     {
                         Win32UnloadGameCode(&Game);
-                        Game = Win32LoadGameCode(SourceDLLName);
+                        Game = Win32LoadGameCode(SourceGameCodeDLLFullPath,
+                                                 TempGameCodeDLLFullPath);
                         LoadCounter = 0;
                     }
 

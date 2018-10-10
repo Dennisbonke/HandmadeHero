@@ -15,9 +15,9 @@ This program / game has not been tested on all systems. The plan is that this ga
 <h2>Notes / Bugs</h2>
 -[BUG] Screen flickers when the resolution is not 1280 by 720.<br>
 <h2>Current Version:</h2>
-Version: 0.0.2, build: 81.<br>
+Version: 0.0.2, build: 82.<br>
 <h2>Current day finished:</h2>
-Week 5, Day 21.<br>
+Week 5, Day 22.<br>
 <h2>Compiler Options</h2>
 If HANDMADE_INTERNAL = 1, it is a dev build and will include dev / debug code. These might not be stable.<br>
 If HANDMADE_INTERNAL = 0, it is a build for public release / shipping build. These _should_ be stable.<br>
