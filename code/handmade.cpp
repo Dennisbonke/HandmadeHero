@@ -12,8 +12,12 @@ GameOutputSound(game_state *GameState, game_sound_output_buffer *SoundBuffer, in
         ++SampleIndex)
     {
         /// TODO(Dennis): Draw this out for people
+#if !PLZ_STFU
         real32 SineValue = sinf(GameState->tSine);
         int16 SampleValue = (int16)(SineValue * ToneVolume);
+#else
+        int16 SampleValue = 0;
+#endif
         *SampleOut++ = SampleValue;
         *SampleOut++ = SampleValue;
 
@@ -55,6 +59,39 @@ RenderWeirdGradient(game_offscreen_buffer *Buffer, int BlueOffset, int GreenOffs
     }
 }
 
+internal void
+RenderPlayer(game_offscreen_buffer *Buffer, int PlayerX, int PlayerY)
+{
+    uint8 *EndOfBuffer = (uint8 *)Buffer->Memory +
+        Buffer->BytesPerPixel*Buffer->Width +
+        Buffer->Pitch*Buffer->Height;
+    
+    uint32 Color = 0x00FFCC00;
+    int Top = PlayerY;
+    int Bottom = PlayerY+10;
+    for(int X = PlayerX;
+        X < PlayerX+10;
+        ++X)
+    {
+        uint8 *Pixel = ((uint8 *)Buffer->Memory +
+                        X*Buffer->BytesPerPixel +
+                        Top*Buffer->Pitch);
+        for(int Y = Top;
+            Y < Bottom;
+            ++Y)
+        {
+            // NOTE(Dennis): Alright, this should provide OutOfBounds write protection
+            // BUT Y U ONLY WORK ON TOP SIDE AND NOT ON BOTTOM?!
+            if((Pixel >= Buffer->Memory) &&
+               (Pixel < EndOfBuffer))
+            {
+                *(uint32 *)Pixel = Color;
+                Pixel += Buffer->Pitch;
+            }
+        }
+    }
+}
+
 extern "C" GAME_UPDATE_AND_RENDER(GameUpdateAndRender)
 {
     Assert((&Input->Controllers[0].Terminator - &Input->Controllers[0].Buttons[0]) == (ArrayCount(Input->Controllers[0].Buttons)));
@@ -76,6 +113,9 @@ extern "C" GAME_UPDATE_AND_RENDER(GameUpdateAndRender)
 
         GameState->ToneHz = 512;
         GameState->tSine = 0.0f;
+
+        GameState->PlayerX = 100;
+        GameState->PlayerY = 100;
 
         /// TODO(Dennis): This may be more appropriate to do in the platform layer
         Memory->IsInitialized = true;
@@ -109,19 +149,23 @@ extern "C" GAME_UPDATE_AND_RENDER(GameUpdateAndRender)
 
         /// Input.AButtonEndedDown;
         /// Input.AButtonHalfTransitionCount;
+
+        // NOTE(Dennis): Y U NO WORK? See RenderPlayer
+        GameState->PlayerX += (int)(4.0f*Controller->StickAverageX);
+        GameState->PlayerY -= (int)(4.0f*Controller->StickAverageY);
+        if(GameState->tJump > 0)
+        {
+            GameState->PlayerY -= (int)(10.0f*sinf(GameState->tJump));
+        }
         if(Controller->ActionDown.EndedDown)
         {
-            GameState->GreenOffset += 1;
-            GameState->ToneHz -= 10;
+            GameState->tJump = 1.0;
         }
-        if(Controller->ActionUp.EndedDown)
-        {
-            GameState->GreenOffset -= 1;
-            GameState->ToneHz += 10;
-        }
+        GameState->tJump -= 0.033f;
     }
 
     RenderWeirdGradient(Buffer, GameState->BlueOffset, GameState->GreenOffset);
+    RenderPlayer(Buffer, GameState->PlayerX, GameState->PlayerY);
 }
 
 extern "C" GAME_GET_SOUND_SAMPLES(GameGetSoundSamples)

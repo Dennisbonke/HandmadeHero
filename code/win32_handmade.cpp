@@ -1,4 +1,4 @@
-/// NOTE(Dennis): Finished day 22.
+/// NOTE(Dennis): Working on Day 23, stopped @ 17:42.
 /// TODO(Dennis): Capture Debug strings to a file?
 /// TODO(Dennis): Fancy debug messages?
 
@@ -690,10 +690,12 @@ Win32DebugDrawVertical(win32_offscreen_buffer *Backbuffer,
 
     if((X >= 0) && (X < Backbuffer->Width))
     {
-        uint8 *Pixel ((uint8 *)Backbuffer->Memory + X*Backbuffer->BytesPerPixel + Top*Backbuffer->Pitch);
-            for(int Y = Top;
-            Y < Bottom;
-            ++Y)
+        uint8 *Pixel = ((uint8 *)Backbuffer->Memory +
+                        X*Backbuffer->BytesPerPixel +
+                        Top*Backbuffer->Pitch);
+        for(int Y = Top;
+        Y < Bottom;
+        ++Y)
         {
             *(uint32 *)Pixel = Color;
             Pixel += Backbuffer->Pitch;
@@ -1104,6 +1106,7 @@ WinMain(HINSTANCE Instance,
                         Buffer.Width = GlobalBackbuffer.Width;
                         Buffer.Height = GlobalBackbuffer.Height;
                         Buffer.Pitch = GlobalBackbuffer.Pitch;
+                        Buffer.BytesPerPixel = GlobalBackbuffer.BytesPerPixel;
                         Game.UpdateAndRender(&GameMemory, NewInput, &Buffer);
 
                         LARGE_INTEGER AudioWallClock = Win32GetWallClock();

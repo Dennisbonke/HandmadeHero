@@ -22,6 +22,9 @@ HANDMADE_SLOW:
 
 #define Pi32 3.14159265359f
 
+// NOTE(Dennis): Don't keep this, only cuz sine wave makes you go crazy
+#define PLZ_STFU 1
+
 typedef int8_t int8;
 typedef int16_t int16;
 typedef int32_t int32;
@@ -98,6 +101,7 @@ struct game_offscreen_buffer
     int Width;
     int Height;
     int Pitch;
+    int BytesPerPixel;
 };
 
 struct game_sound_output_buffer
@@ -203,7 +207,12 @@ struct game_state
     int ToneHz;
     int GreenOffset;
     int BlueOffset;
+    
     real32 tSine;
+
+    int PlayerX;
+    int PlayerY;
+    real32 tJump;
 };
 
 #endif

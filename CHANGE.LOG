@@ -1,6 +1,9 @@
 Known bugs:
 -Screen flickers when the resolution is not 1280 by 720.
 
+Version 0.0.2 (Build 83):
+- Added a small square that can move with the xbox controller, is for debugging so it is crappy.
+
 Version 0.0.2 (Build 82):
 - We get the full path of our executable now, and we try to load the DLL from there, which should allow us to run in the debugger without setting our working directory to the build directory instead of the data directory.
 
